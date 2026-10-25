@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>TinyNPU · 4×4 脉动阵列交互演示</title>
+<style>
+:root{color-scheme:dark;--bg:#08111e;--panel:#111e31;--card:#15243a;--muted:#9db0c6;--line:#34465e;--blue:#249af0;--pink:#ed547c;--gold:#e9bd68;--fg:#edf4fc}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at 50% 0%,#182c45,transparent 57%),var(--bg);color:var(--fg);font:15px/1.5 system-ui,-apple-system,"Segoe UI","Microsoft YaHei",sans-serif}.wrap{max-width:1150px;margin:auto;padding:30px 20px 48px}h1{font-size:clamp(23px,3vw,33px);margin:0 0 4px}.sub{color:var(--muted);margin:0 0 24px}.panel{border:1px solid var(--line);background:#101d30d9;border-radius:20px;padding:20px;margin-bottom:18px}.ctrl{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}.step{font-size:29px;font-weight:800;letter-spacing:.01em}.meta{font-size:12px;color:var(--muted)}.btns{display:flex;gap:8px;flex-wrap:wrap}button{border:1px solid #5a6d83;background:#17263a;color:var(--fg);border-radius:11px;padding:10px 14px;font:inherit;cursor:pointer}button:hover:not(:disabled){background:#27405e}button:disabled{opacity:.35;cursor:default}button.main{background:#ebf3ff;color:#111c2d;border-color:#ebf3ff;font-weight:700}button.main:hover:not(:disabled){background:#cce5ff}.timeline{width:100%;margin:20px 0 4px;accent-color:#68bdff;cursor:pointer}.ticks{display:flex;justify-content:space-between;color:var(--muted);font-size:12px;padding:0 3px}.legend{display:flex;gap:16px;flex-wrap:wrap;justify-content:center;margin:0 0 16px;font-size:13px;color:#cad7e7}.sw{width:15px;height:15px;display:inline-block;vertical-align:middle;margin-right:5px;background:var(--blue);border-radius:3px}.sw.b{background:var(--pink);border-radius:50%}.layout{display:grid;grid-template-columns:minmax(0,1fr) 280px;gap:22px}.matrix-board{border-radius:14px;background:linear-gradient(145deg,#101d30,#0b1727);border:1px solid var(--line);padding:17px}.board{display:grid;grid-template-columns:80px repeat(4,minmax(0,1fr));gap:7px}.label-col{color:var(--muted);font-size:12px;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:3px}.boundary-top{height:68px}.boundary-left{min-height:90px}.port{border-radius:10px;min-width:36px;min-height:32px;display:inline-flex;justify-content:center;align-items:center;font-size:16px;font-weight:800;color:white}.port.a{background:#1789d7}.port.b{background:#d9436b;border-radius:99px}.port.zero{background:#293e56;color:#b6c6d9}.pe{min-height:95px;border:1px solid #37506a;background:#142338;border-radius:10px;text-align:center;padding:7px 3px 5px;display:flex;flex-direction:column;align-items:center;justify-content:space-between;gap:5px;cursor:pointer;transition:border-color .12s,background .12s}.pe:hover{border-color:#d8e3f3}.pe.selected{border:2px solid var(--gold);background:#253448}.pe-title{font-size:11px;color:#b8cbdd}.tokens{display:flex;justify-content:center;gap:5px;min-height:29px;align-items:center}.token{width:31px;height:31px;border-radius:5px;display:flex;align-items:center;justify-content:center;color:white;font-weight:800}.token.b{background:var(--pink);border-radius:50%}.token.a{background:var(--blue)}.token.zero{background:#344963;color:#c6d8ec}.absent{color:#536881}.sum{font-size:11px;color:#b8c9dd}.selected .sum{color:#ffe3a4}.note{font-size:12px;color:var(--muted);margin-top:14px}.side h3{margin:0 0 9px;font-size:15px}.matrix{display:grid;grid-template-columns:repeat(4,34px);gap:6px;width:max-content;margin:8px auto 18px;border-left:2px solid #7a90ac;border-right:2px solid #7a90ac;padding:6px 12px}.matrix span{text-align:center;font-variant-numeric:tabular-nums}.matlabel{font-weight:700;color:#9dd8ff}.matlabel.b{color:#ff98b3}.vectors{padding:12px;background:#0a1627;border-radius:10px;font-family:ui-monospace,Consolas,monospace;font-size:13px;margin-top:12px}.vectors p{margin:4px 0}.detail{border-top:1px solid var(--line);padding-top:14px;margin-top:15px}.detail div{margin:4px 0}.detail strong{color:var(--gold)}.foot{color:#a9bdd4;font-size:12px;margin-top:10px}.complete{display:grid;grid-template-columns:repeat(4,1fr);gap:6px}.complete div{background:#14273f;border-radius:6px;text-align:center;padding:9px 1px;font-weight:700}.focus{color:#ffd58c!important}.status{color:#c5d8ea;margin-bottom:6px}@media(max-width:820px){.layout{grid-template-columns:1fr}.side{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.side .panel{margin-bottom:0}}@media(max-width:540px){.wrap{padding:14px 9px 30px}.panel{padding:13px}.matrix-board{padding:8px}.board{grid-template-columns:48px repeat(4,minmax(0,1fr));gap:4px}.boundary-left{min-height:76px}.pe{min-height:80px;padding:5px 0}.token{width:23px;height:23px;font-size:12px}.pe-title{font-size:9px}.sum{font-size:10px}.side{display:block}.side .panel{margin-bottom:12px}.legend{gap:10px}.ctrl{align-items:start}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header><h1>TinyNPU · 4×4 脉动阵列</h1><p class="sub">INT8 矩阵乘法的逐拍交互演示｜A 向右传递，B 向下传递，结果驻留在 PE 中</p></header>
+<section class="panel">
+<div class="ctrl"><div><div class="meta">当前时钟拍</div><div class="step" id="current">t = 4</div></div><div class="btns"><button id="prev">← 上一拍</button><button id="next" class="main">下一拍 →</button><button id="play">▶ 自动播放</button><button id="reset">↺ 重置</button></div></div>
+<input id="slider" class="timeline" type="range" min="0" max="9" step="1" value="4" aria-label="调整时钟拍 t"/><div class="ticks"><span>t=0</span><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span><span>t=9</span></div>
+</section>
+<div class="legend"><span><i class="sw"></i> A：蓝色方块（向右 →）</span><span><i class="sw b"></i> B：红色圆形（向下 ↓）</span><span>Σ：该 PE 累加值</span></div>
+<div class="layout"><section class="matrix-board"><div class="board" id="board"></div><div class="vectors" id="vectors"></div><p class="note">图中显示的是第 t 拍输入被上升沿采样时，各 PE 的参与计算的数据。B 中的 0 仍是有效矩阵元素；“—”表示此时没有有效矩阵元素。实际硬件在空闲拍依然可能处理填充用的 0。</p></section>
+<aside class="side"><section class="panel"><h3>输入矩阵</h3><div class="matlabel">A =</div><div class="matrix" id="matrix-a"></div><div class="matlabel b">B =</div><div class="matrix" id="matrix-b"></div></section><section class="panel"><h3>PE 计算详情</h3><div class="status" id="selected"></div><div class="detail" id="detail"></div><p class="foot">点击左边任意 PE，观察它在不同拍处理的乘积。</p></section><section class="panel"><h3>当前累计结果矩阵 C</h3><div class="complete" id="result"></div><p class="foot">t=9 后，所有 16 个结果都计算完成。</p></section></aside></div>
+<p class="foot">操作提示：拖动滑块、点击上一拍/下一拍，或使用键盘 ← →；也可以自动播放。此文件完全离线运行，无需联网。</p>
+</div>
+<script>
+'use strict';
+const A=[[1,2,3,4],[5,6,7,8],[9,10,11,12],[13,14,15,16]];
+const B=[[1,0,2,0],[0,1,0,2],[1,0,1,0],[0,1,0,1]];
+let t=4, selected=[1,1],timer=null;
+const el=id=>document.getElementById(id);
+function matrixHtml(grid){return grid.flat().map(v=>`<span>${v}</span>`).join('')}
+el('matrix-a').innerHTML=matrixHtml(A);el('matrix-b').innerHTML=matrixHtml(B);
+function inputA(t,r){const k=t-r;return k>=0&&k<4?A[r][k]:0}
+function inputB(t,c){const k=t-c;return k>=0&&k<4?B[k][c]:0}
+function data(t,r,c){const k=t-r-c; const active=k>=0&&k<4;let acc=0;for(let n=0;n<=Math.min(3,k);n++)if(n>=0)acc+=A[r][n]*B[n][c];return {k,active,a:active?A[r][k]:null,b:active?B[k][c]:null,acc}}
+function token(value,kind){return `<div class="token ${kind} ${value===0?'zero':''}">${value}</div>`}
+function borderPort(v,kind){return `<span class="port ${kind} ${v===0?'zero':''}">${v}</span>`}
+function draw(){el('slider').value=t;el('current').textContent=`t = ${t}`;el('prev').disabled=t===0;el('next').disabled=t===9;
+let html=`<div class="label-col boundary-top">B 输入 ↓</div>`;
+for(let c=0;c<4;c++)html+=`<div class="label-col boundary-top">列 ${c}${borderPort(inputB(t,c),'b')}<span>↓</span></div>`;
+for(let r=0;r<4;r++){
+  html+=`<div class="label-col boundary-left">行 ${r}${borderPort(inputA(t,r),'a')}<span>→</span></div>`;
+  for(let c=0;c<4;c++){
+    const z=data(t,r,c),on=selected[0]===r&&selected[1]===c;
+    html+=`<button type="button" class="pe ${on?'selected':''}" data-r="${r}" data-c="${c}" aria-label="查看 PE(${r},${c}) 的详情"><div class="pe-title">PE(${r},${c})</div><div class="tokens">${z.active?token(z.a,'a')+token(z.b,'b'):'<span class="absent">—</span>'}</div><div class="sum">Σ = ${z.acc}</div></button>`;
+  }
+}
+el('board').innerHTML=html;
+el('board').querySelectorAll('.pe').forEach(b=>b.addEventListener('click',()=>{selected=[Number(b.dataset.r),Number(b.dataset.c)];draw()}));
+let ain=A.map((_,r)=>inputA(t,r)),bin=B[0].map((_,c)=>inputB(t,c));
+el('vectors').innerHTML=`<p>a_left（按行 0→3） = [${ain.join(', ')}]</p><p>b_top （按列 0→3） = [${bin.join(', ')}]</p>`;
+const [r,c]=selected,z=data(t,r,c);el('selected').textContent=`PE(${r},${c}) ｜目标 C[${r}][${c}]`;
+let explanation='';
+if(t<r+c)explanation=`数据尚未抵达该 PE（第一组对应数据在 t=${r+c} 抵达）。`;
+else if(t>r+c+3)explanation='该 PE 已完成四次有效乘累加，结果保持不变。';
+else explanation=`本拍 k=${z.k}：A[${r}][${z.k}]=${z.a}，B[${z.k}][${c}]=${z.b}，本拍乘积 = ${z.a*z.b}。`;
+let terms=[];for(let k=0;k<=Math.min(3,t-r-c);k++)if(k>=0)terms.push(`${A[r][k]}×${B[k][c]}`);
+el('detail').innerHTML=`<div>${explanation}</div><div>累计表达式：${terms.length?terms.join(' + '):'尚未计算'}</div><div>当前 <strong>acc = ${z.acc}</strong></div><div>完整预期结果：${[0,1,2,3].reduce((s,k)=>s+A[r][k]*B[k][c],0)}</div>`;
+let out='';for(let i=0;i<4;i++)for(let j=0;j<4;j++)out+=`<div class="${selected[0]===i&&selected[1]===j?'focus':''}">${data(t,i,j).acc}</div>`;el('result').innerHTML=out;
+}
+function goto(n){t=Math.max(0,Math.min(9,n));draw()}
+function stop(){if(timer!==null){clearInterval(timer);timer=null}el('play').textContent='▶ 自动播放'}
+el('prev').addEventListener('click',()=>{stop();goto(t-1)});
+el('next').addEventListener('click',()=>{stop();goto(t+1)});
+el('reset').addEventListener('click',()=>{stop();goto(0)});
+el('slider').addEventListener('input',e=>{stop();goto(Number(e.target.value))});
+el('play').addEventListener('click',()=>{if(timer!==null){stop();return}if(t===9)goto(0);el('play').textContent='⏸ 暂停';timer=setInterval(()=>{if(t===9){stop();return}goto(t+1)},950)});
+document.addEventListener('keydown',e=>{if(e.target&&e.target.tagName==='INPUT')return;if(e.key==='ArrowLeft'){stop();goto(t-1)}else if(e.key==='ArrowRight'){stop();goto(t+1)}});
+draw();
+</script>
+</body></html>

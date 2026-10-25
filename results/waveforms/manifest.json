@@ -1,0 +1,32 @@
+﻿[
+    {
+        "original":  "sim/array.vcd",
+        "archived":  "results/waveforms/array.vcd",
+        "bytes":  20963,
+        "sha256":  "4B516379515558606E726B39BE17FB884A9F57AC7E64ED7D847BC6BA8910171A"
+    },
+    {
+        "original":  "sim/controller.vcd",
+        "archived":  "results/waveforms/controller.vcd",
+        "bytes":  1650,
+        "sha256":  "CAA4C842DE3EB38D3B1436BFD730DB300F394424116A0F7CD057134EC5FA1E8D"
+    },
+    {
+        "original":  "sim/feeder.vcd",
+        "archived":  "results/waveforms/feeder.vcd",
+        "bytes":  2939,
+        "sha256":  "9BF2865C82A4E1F5516E6F055AF28A391204E62F7A5B0294025E97AED32CFB81"
+    },
+    {
+        "original":  "sim/pe.vcd",
+        "archived":  "results/waveforms/pe.vcd",
+        "bytes":  1350,
+        "sha256":  "2C934B40BCCDE74CC2EF52B7D003D2E8B9557EAE4F28C4B8DBF4BA86F28DF260"
+    },
+    {
+        "original":  "sim/tiny_npu_top.vcd",
+        "archived":  "results/waveforms/tiny_npu_top.vcd",
+        "bytes":  28224,
+        "sha256":  "11F92C7DD26F6E6FB25CB8808BFBD17AADD70F16E00FD75D0F5000E39E2EDCF3"
+    }
+]

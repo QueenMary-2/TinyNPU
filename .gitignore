@@ -1,0 +1,45 @@
+# Generated simulation and implementation output
+/sim/
+/build/
+/obj_dir/
+*.vvp
+*.vcd
+*.fst
+*.lxt
+*.lxt2
+*.wlf
+*.o
+*.out
+*.jou
+*.log
+*.str
+*.pb
+*.cache/
+.Xil/
+
+# Explicitly curated verification evidence is versioned.
+!results/waveforms/*.vcd
+!results/logs/*.log
+
+# Local editor, environment, credentials and backups
+.vscode/
+.idea/
+.vs/
+.codex/
+.agents/
+.aws/
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+__pycache__/
+*.pyc
+Thumbs.db
+.DS_Store
+*.tmp
+*.bak
+*~
+
+# Independent publication checkout; never nest it in the public repository.
+/.publish/

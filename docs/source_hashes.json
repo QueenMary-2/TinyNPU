@@ -1,0 +1,42 @@
+﻿[
+    {
+        "Path":  "rtl/controller.sv",
+        "Hash":  "C8A3AE2457AF2CF9C25D171779AFD7C78672FE3F5C8DC451B40BB5E45224859D"
+    },
+    {
+        "Path":  "rtl/matrix_feeder.sv",
+        "Hash":  "93A637258D4642CF9BE05DE2E850182EBF013802B9FF46420DDAA0419142C38D"
+    },
+    {
+        "Path":  "rtl/pe.sv",
+        "Hash":  "D095B114076F8B6852AEC81237B716EAFF9DC13F73DEBC353C34BD94A0B20440"
+    },
+    {
+        "Path":  "rtl/systolic.sv",
+        "Hash":  "E36B2DCB06FDF77994E5ED7834EBEC17E827521DAEDFE96434F0327E38EB5398"
+    },
+    {
+        "Path":  "rtl/tiny_npu_top.sv",
+        "Hash":  "6CE9EF36BB0032D7840E1706295A73E32028B0597AA9C4A31218141FF7742F22"
+    },
+    {
+        "Path":  "tb/tb_controller.sv",
+        "Hash":  "5C26C2E02CC6F3D14B3242B45D9C6793369E3CBBD1492AC7AC305336D5391257"
+    },
+    {
+        "Path":  "tb/tb_matrix_feeder.sv",
+        "Hash":  "5942DB42B7124353D05FCD739FEF0262032DFB153548D8D60DAD87414B243B2B"
+    },
+    {
+        "Path":  "tb/tb_pe.sv",
+        "Hash":  "D849881F115166EDDA005599EEFCF67DB84717055D8EE1F59EE7823C64DC9667"
+    },
+    {
+        "Path":  "tb/tb_systolic.sv",
+        "Hash":  "D1ABBA3A09FFA030E0EC9A9F14293A017357CCE9CD834889AA520FABF2A58D59"
+    },
+    {
+        "Path":  "tb/tb_tiny_npu_top.sv",
+        "Hash":  "EAC0B66596938118E1E2E8AE6A456B614295DE28D9F091104D0A32FFE3220C34"
+    }
+]
