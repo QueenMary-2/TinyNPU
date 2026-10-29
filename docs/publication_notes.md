@@ -1,29 +1,19 @@
-# Publication preparation — 25 October 2026
+# Release notes - 29 October 2026
 
-## Local and remote Git state
+This release builds on commit `db5cabf` (`docs: prepare TinyNPU for public release`) and retains the original Initial commit and MIT License. The original source workspace is separate from the Git working tree used for publication; no source directory or earlier evidence was deleted.
 
-The original source folder had no `.git` directory and was not a Git working tree. No local commit history was available there to inspect or recover.
+## Actual changes
 
-The GitHub connector confirmed that [QueenMary-2/TinyNPU](https://github.com/QueenMary-2/TinyNPU) is public, uses `main`, and contains an MIT license and README in its initial commit:
+- Add the existing `input_buffer` RTL and connect the controller's CLEAR-state `load` into the top-level datapath.
+- Include the existing input-buffer unit bench and 24-case extended matrix regression without changing test logic.
+- Add a dependency-free regression runner and generic Yosys script; record actual logs, seven VCDs and SHA-256 source/artifact hashes.
+- Update English overview, dataflow, interface, verification, synthesis and limitations documentation.
+- Preserve previous presentation documents in `docs/archive/` and all earlier saved waveform evidence.
 
-```text
-1a1a76de1c3e262cead130341809171dbcbbd5c6  Initial commit
-```
+## Validation
 
-An independent publication checkout is maintained separately from the original source workspace. It is cloned from the existing remote, retaining that commit and the upstream MIT license. The original upstream README is archived before the presentation README is copied into the checkout. No unrelated Git history is initialized, no history is rewritten, and no push is performed.
+Seven existing benches passed on 29 October 2026. The extended suite completed 24 matrix tests / 384 comparisons with zero errors. Generic Yosys synthesis confirmed 10,724 cells and 1,032 flip-flop bits; structural checks reported zero problems. See [verification](verification.md) for tool versions, evidence links and coverage limits. No physical implementation or PPA result is claimed.
 
-## Files and evidence
+No additional RTL or testbench edits were made during release preparation. New input buffering was already present in the source workspace and is the functional change relative to the previous GitHub commit. Publication uses an ordinary commit and non-force push on the existing working branch.
 
-- Original RTL and testbenches remain unchanged; source hashes are recorded.
-- The initially empty local README is preserved in `docs/archive/README.original.md`.
-- The upstream README is preserved in `docs/archive/README.upstream.md`.
-- Original documents, images, HTML, video and simulation artifacts remain in place.
-- Curated VCD copies are explicitly included by `.gitignore`; local simulator binaries and working traces are ignored.
-- Existing upstream MIT license is retained verbatim and copied into the presentation folder.
-- No complete review, functional simulation rerun, FPGA work or ASIC work is claimed.
-
-## Readiness
-
-The release preparation is committed on top of the existing Initial commit with message `docs: prepare TinyNPU for public release`. The original source workspace and earlier preparation directory remain intact. Review the commit with `git show --stat` and inspect the English README and evidence limitations. Publication requires the owner's explicit confirmation before any push.
-
-The original folder remains a source/presentation workspace; use the independent checkout for Git operations. A clean Git history and a prepared local working tree do not mean the updated project has already been published.
+The [previous release notes](archive/publication_notes.release-2026-10-25.md) are retained as historical context.

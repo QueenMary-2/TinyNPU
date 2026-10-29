@@ -1,0 +1,13 @@
+VCD info: dumpfile sim/feeder.vcd opened for output.
+cycle=0 | A=1,0,0,0 | B=1,0,0,0
+cycle=1 | A=2,5,0,0 | B=0,0,0,0
+cycle=2 | A=3,6,9,0 | B=0,1,0,0
+cycle=3 | A=4,7,10,13 | B=0,0,0,0
+cycle=4 | A=0,8,11,14 | B=0,0,1,0
+cycle=5 | A=0,0,12,15 | B=0,0,0,0
+cycle=6 | A=0,0,0,16 | B=0,0,0,1
+cycle=7 | A=0,0,0,0 | B=0,0,0,0
+cycle=8 | A=0,0,0,0 | B=0,0,0,0
+cycle=9 | A=0,0,0,0 | B=0,0,0,0
+FEEDER TEST FINISHED
+tb/tb_matrix_feeder.sv:69: $finish called at 106000 (1ps)

@@ -1,0 +1,317 @@
+{
+  "started_utc": "2026-10-29T16:59:40.750321+00:00",
+  "mode": "all",
+  "sources_sha256": {
+    "rtl/pe.sv": "d095b114076f8b6852aec81237b716eaff9dc13f73debc353c34bd94a0b20440",
+    "rtl/systolic.sv": "e36b2dcb06fdf77994e5ed7834ebec17e827521daedfe96434f0327e38eb5398",
+    "rtl/input_buffer.sv": "27ef4a21e2798319e8097eccd2b2693d95a38e4ad1dec2a2f0cd01755ed3708b",
+    "rtl/controller.sv": "dbb8c54744a6a12c58ee7726a7edfa4302fd6d26c880e43854405e5ad8ff39c7",
+    "rtl/matrix_feeder.sv": "93a637258d4642cf9be05de2e850182ebf013802b9ff46420ddaa0419142c38d",
+    "rtl/tiny_npu_top.sv": "89e06940c1e94237563aa1426a4cf09d6c182cd9f8965430ef236d5f6d1b73d6",
+    "tb/tb_pe.sv": "d849881f115166edda005599eefcf67db84717055d8ee1f59ee7823c64dc9667",
+    "tb/tb_systolic.sv": "d1abba3a09ffa030e0ec9a9f14293a017357cce9cd834889aa520fabf2a58d59",
+    "tb/tb_controller.sv": "5c26c2e02cc6f3d14b3242b45d9c6793369e3cbbd1492ac7ac305336d5391257",
+    "tb/tb_matrix_feeder.sv": "5942db42b7124353d05fcd739fef0262032dfb153548d8d60dad87414b243b2b",
+    "tb/tb_input_buffer.sv": "409500b89334a25ff3f1019cb57522dd2f1c7b52f23556177b0f012a4a0d5326",
+    "tb/tb_tiny_npu_top.sv": "eac0b66596938118e1e2e8ae6a456b614295de28d9f091104d0a32ffe3220c34",
+    "tb/tb_tiny_npu_extended.sv": "22436ef638e05823bf9841042ded677ffe5be72e3996a8dd8ea461a65eaf80fb",
+    "scripts/synth.ys": "60733f2eb3dacd35a5ea6d0943f137b0fb205b8383aac8e71c609c19ef0056e0",
+    "scripts/run_checks.py": "88f0238e925cee07ab70aea1468b90fa5cef8d89e3a17002b50012fcd03bddb2"
+  },
+  "commands": [
+    {
+      "argv": [
+        "iverilog",
+        "-V"
+      ],
+      "working_directory": "project root",
+      "log": "iverilog_version.log"
+    },
+    {
+      "argv": [
+        "vvp",
+        "-V"
+      ],
+      "working_directory": "project root",
+      "log": "vvp_version.log"
+    },
+    {
+      "argv": [
+        "iverilog",
+        "-g2012",
+        "-s",
+        "tb_pe",
+        "-o",
+        "<output>\\tb_pe.vvp",
+        "rtl/pe.sv",
+        "rtl/systolic.sv",
+        "rtl/input_buffer.sv",
+        "rtl/controller.sv",
+        "rtl/matrix_feeder.sv",
+        "rtl/tiny_npu_top.sv",
+        "tb/tb_pe.sv"
+      ],
+      "working_directory": "project root",
+      "log": "tb_pe_compile.log"
+    },
+    {
+      "argv": [
+        "vvp",
+        "tb_pe.vvp"
+      ],
+      "working_directory": "output directory",
+      "log": "tb_pe.log"
+    },
+    {
+      "argv": [
+        "iverilog",
+        "-g2012",
+        "-s",
+        "tb_systolic_array",
+        "-o",
+        "<output>\\tb_systolic_array.vvp",
+        "rtl/pe.sv",
+        "rtl/systolic.sv",
+        "rtl/input_buffer.sv",
+        "rtl/controller.sv",
+        "rtl/matrix_feeder.sv",
+        "rtl/tiny_npu_top.sv",
+        "tb/tb_systolic.sv"
+      ],
+      "working_directory": "project root",
+      "log": "tb_systolic_array_compile.log"
+    },
+    {
+      "argv": [
+        "vvp",
+        "tb_systolic_array.vvp"
+      ],
+      "working_directory": "output directory",
+      "log": "tb_systolic_array.log"
+    },
+    {
+      "argv": [
+        "iverilog",
+        "-g2012",
+        "-s",
+        "tb_controller",
+        "-o",
+        "<output>\\tb_controller.vvp",
+        "rtl/pe.sv",
+        "rtl/systolic.sv",
+        "rtl/input_buffer.sv",
+        "rtl/controller.sv",
+        "rtl/matrix_feeder.sv",
+        "rtl/tiny_npu_top.sv",
+        "tb/tb_controller.sv"
+      ],
+      "working_directory": "project root",
+      "log": "tb_controller_compile.log"
+    },
+    {
+      "argv": [
+        "vvp",
+        "tb_controller.vvp"
+      ],
+      "working_directory": "output directory",
+      "log": "tb_controller.log"
+    },
+    {
+      "argv": [
+        "iverilog",
+        "-g2012",
+        "-s",
+        "tb_matrix_feeder",
+        "-o",
+        "<output>\\tb_matrix_feeder.vvp",
+        "rtl/pe.sv",
+        "rtl/systolic.sv",
+        "rtl/input_buffer.sv",
+        "rtl/controller.sv",
+        "rtl/matrix_feeder.sv",
+        "rtl/tiny_npu_top.sv",
+        "tb/tb_matrix_feeder.sv"
+      ],
+      "working_directory": "project root",
+      "log": "tb_matrix_feeder_compile.log"
+    },
+    {
+      "argv": [
+        "vvp",
+        "tb_matrix_feeder.vvp"
+      ],
+      "working_directory": "output directory",
+      "log": "tb_matrix_feeder.log"
+    },
+    {
+      "argv": [
+        "iverilog",
+        "-g2012",
+        "-s",
+        "tb_input_buffer",
+        "-o",
+        "<output>\\tb_input_buffer.vvp",
+        "rtl/pe.sv",
+        "rtl/systolic.sv",
+        "rtl/input_buffer.sv",
+        "rtl/controller.sv",
+        "rtl/matrix_feeder.sv",
+        "rtl/tiny_npu_top.sv",
+        "tb/tb_input_buffer.sv"
+      ],
+      "working_directory": "project root",
+      "log": "tb_input_buffer_compile.log"
+    },
+    {
+      "argv": [
+        "vvp",
+        "tb_input_buffer.vvp"
+      ],
+      "working_directory": "output directory",
+      "log": "tb_input_buffer.log"
+    },
+    {
+      "argv": [
+        "iverilog",
+        "-g2012",
+        "-s",
+        "tb_tiny_npu_top",
+        "-o",
+        "<output>\\tb_tiny_npu_top.vvp",
+        "rtl/pe.sv",
+        "rtl/systolic.sv",
+        "rtl/input_buffer.sv",
+        "rtl/controller.sv",
+        "rtl/matrix_feeder.sv",
+        "rtl/tiny_npu_top.sv",
+        "tb/tb_tiny_npu_top.sv"
+      ],
+      "working_directory": "project root",
+      "log": "tb_tiny_npu_top_compile.log"
+    },
+    {
+      "argv": [
+        "vvp",
+        "tb_tiny_npu_top.vvp"
+      ],
+      "working_directory": "output directory",
+      "log": "tb_tiny_npu_top.log"
+    },
+    {
+      "argv": [
+        "iverilog",
+        "-g2012",
+        "-s",
+        "tb_tiny_npu_extended",
+        "-o",
+        "<output>\\tb_tiny_npu_extended.vvp",
+        "rtl/pe.sv",
+        "rtl/systolic.sv",
+        "rtl/input_buffer.sv",
+        "rtl/controller.sv",
+        "rtl/matrix_feeder.sv",
+        "rtl/tiny_npu_top.sv",
+        "tb/tb_tiny_npu_extended.sv"
+      ],
+      "working_directory": "project root",
+      "log": "tb_tiny_npu_extended_compile.log"
+    },
+    {
+      "argv": [
+        "vvp",
+        "tb_tiny_npu_extended.vvp"
+      ],
+      "working_directory": "output directory",
+      "log": "tb_tiny_npu_extended.log"
+    },
+    {
+      "argv": [
+        "yosys",
+        "-V"
+      ],
+      "working_directory": "project root",
+      "log": "yosys_version.log"
+    },
+    {
+      "argv": [
+        "yosys",
+        "-s",
+        "scripts/synth.ys"
+      ],
+      "working_directory": "project root",
+      "log": "yosys_synth.log"
+    }
+  ],
+  "tests": [
+    {
+      "top": "tb_pe",
+      "status": "PASS",
+      "success_marker": "ALL PE TESTS PASSED"
+    },
+    {
+      "top": "tb_systolic_array",
+      "status": "PASS",
+      "success_marker": "ALL ARRAY TESTS PASSED"
+    },
+    {
+      "top": "tb_controller",
+      "status": "PASS",
+      "success_marker": "Return to IDLE passed!"
+    },
+    {
+      "top": "tb_matrix_feeder",
+      "status": "PASS",
+      "success_marker": "FEEDER TEST FINISHED"
+    },
+    {
+      "top": "tb_input_buffer",
+      "status": "PASS",
+      "success_marker": "ALL INPUT BUFFER TESTS PASSED"
+    },
+    {
+      "top": "tb_tiny_npu_top",
+      "status": "PASS",
+      "success_marker": "ALL TINYNPU TOP TESTS PASSED"
+    },
+    {
+      "top": "tb_tiny_npu_extended",
+      "status": "PASS",
+      "success_marker": "ALL EXTENDED TESTS PASSED"
+    }
+  ],
+  "synthesis": {
+    "status": "PASS",
+    "tool": "Yosys 0.69+270 (git sha1 c4a0a2c48, Release, GNU /usr/bin/x86_64-w64-mingw32-g++ 15.2.1)",
+    "flow": "scripts/synth.ys",
+    "mapping": "generic internal cells; no target library"
+  },
+  "status": "PASS",
+  "finished_utc": "2026-10-29T16:59:47.957872+00:00",
+  "artifacts_sha256": {
+    "controller.vcd": "f270c8bd703f02157bd297897847c6b06c0b63ce7bdf66f82dcce6937a6ecc70",
+    "iverilog_version.log": "079ff03579e155f39ca5534cc3ac4004b39841db797cb56f11e1e974d24f169a",
+    "sim/array.vcd": "7889626aa9229551cd524a3f1c5c96e506fe7dea9381f82ed73e95dd0045e033",
+    "sim/feeder.vcd": "2ed50d3d7a8a123b4557a3e0e5089c9c55b1a1fe6fc43245652380370d28075d",
+    "sim/input_buffer.vcd": "9e0a0c97c6bbd32927f5935e46780f0e6ae9265a2edd9eba4a57f4fb2f979cb4",
+    "sim/pe.vcd": "6002dfdaf092376ac16e0042a6ab85993986a63f89f2d3b5d93900202127cdc0",
+    "sim/tiny_npu_extended.vcd": "b306b6dcddc29908a09ba42644989579c66df8ae544b4d45dcfc0d6651473114",
+    "sim/tiny_npu_top.vcd": "abdfd1e4d7aacf528f72da3d9e4594006ce20b009c953156c68e9c023efbf674",
+    "tb_controller.log": "05b0cd01e0e1fe4d4579b05896de87fec799af4c8229a1c6580ec1a9be382d85",
+    "tb_controller_compile.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "tb_input_buffer.log": "4e2d09765c40b50568939de4653421e6cb07fd788fbea7dc0db18283019e2b47",
+    "tb_input_buffer_compile.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "tb_matrix_feeder.log": "4358b10248f33ae1e2bf2b7e10da70365ec92e85b355e59dc3214deb707f2553",
+    "tb_matrix_feeder_compile.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "tb_pe.log": "164bacc78888d446627cab623c204014138c944278d327366468a8702d2d112f",
+    "tb_pe_compile.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "tb_systolic_array.log": "e411f448682a43890bbf7fe7cfb64ddc9dcd8f91c63df1d1d7ee113b66fa8999",
+    "tb_systolic_array_compile.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "tb_tiny_npu_extended.log": "3b1f1780fbdefcbdfc9108e64bf6f5d1e6080d9e3cdc92369c722d12a47b654a",
+    "tb_tiny_npu_extended_compile.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "tb_tiny_npu_top.log": "687c497e37a78a1be93b8e8c974166cbaf3236f33b0e32cbd0ad6043d4aea850",
+    "tb_tiny_npu_top_compile.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "vvp_version.log": "0c0fab36f42afeac366b5c461022e124906b6adc15e4fa18c0ec15f2092102e7",
+    "yosys_synth.log": "620d18fab9cb37bd4dc55f86f363929535b107ce4f631afdeaafc0a71a68a703",
+    "yosys_version.log": "760cd485ce4b586e17898a2552f25907371943fcbc6e2ffe32dec4088ec92f8a"
+  }
+}

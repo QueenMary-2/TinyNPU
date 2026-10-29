@@ -1,0 +1,2 @@
+# Keep archived run evidence byte-identical to its SHA-256 manifest on all OSes.
+/results/runs/** -text -whitespace

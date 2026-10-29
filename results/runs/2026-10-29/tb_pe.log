@@ -1,0 +1,5 @@
+VCD info: dumpfile sim/pe.vcd opened for output.
+result=6 a_out=2 b_out=3
+second result=26 a_out=4 b_out=5
+ALL PE TESTS PASSED
+tb/tb_pe.sv:50: $finish called at 60000 (1ps)

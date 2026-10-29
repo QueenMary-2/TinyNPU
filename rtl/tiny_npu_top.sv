@@ -11,6 +11,11 @@ module tiny_npu_top(
     logic[3:0]cycle;
     logic en;
     logic clear;
+    logic load;
+
+    logic[127:0]a_buffered;
+    logic[127:0]b_buffered;
+
     logic[31:0]a_left;
     logic[31:0]b_top;
 
@@ -21,12 +26,23 @@ module tiny_npu_top(
         .clear(clear),
         .en(en),
         .done(done),
+        .load(load),
         .cycle(cycle)
     );
 
-    matrix_feeder u_feeder(
+    input_buffer u_buffer(
+        .clk(clk),
+        .rst(rst),
+        .load(load),
         .a_matrix(a_matrix),
         .b_matrix(b_matrix),
+        .a_reg(a_buffered),
+        .b_reg(b_buffered)
+    );
+
+    matrix_feeder u_feeder(
+        .a_matrix(a_buffered),
+        .b_matrix(b_buffered),
         .a_left(a_left),
         .b_top(b_top),
         .en(en),

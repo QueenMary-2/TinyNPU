@@ -20,6 +20,8 @@
 # Explicitly curated verification evidence is versioned.
 !results/waveforms/*.vcd
 !results/logs/*.log
+!results/runs/**/*.log
+!results/runs/**/*.vcd
 
 # Local editor, environment, credentials and backups
 .vscode/

@@ -1,139 +1,176 @@
-# TinyNPU — 4 × 4 Systolic Matrix Multiplication in SystemVerilog
+# TinyNPU - Buffered INT8 Systolic Matrix Accelerator
 
-TinyNPU is a personal electronic engineering portfolio project exploring the hardware behind matrix multiplication accelerators. It implements a fixed-size, output-stationary **4 × 4 systolic array** with 16 processing elements, a matrix feeder, and a finite-state controller.
+TinyNPU is a SystemVerilog matrix multiplication accelerator prototype for studying RTL design, spatial dataflow and hardware verification. A **4 x 4 output-stationary systolic array** computes `C = A * B` using 16 signed INT8 multiply-accumulate processing elements and 32-bit local accumulators.
 
-The project demonstrates RTL hierarchy, signed multiply–accumulate arithmetic, spatial data reuse, cycle scheduling, and testbench-based functional verification. It is intended for academic discussion and postgraduate electronic engineering project presentations.
+It provides a concrete portfolio example for RTL / ASIC design and AI accelerator engineering: modular hardware, explicit cycle scheduling, input buffering, executable reference comparisons and reproducible generic synthesis. It is an educational and research prototype, not a commercial or programmable NPU.
 
-**Status:** RTL implementation and functional simulation completed; the previous verification session was reported as all PASS. Existing Icarus Verilog waveform files are preserved as evidence. This documentation release does not rerun the simulations. See [verification scope and evidence](docs/verification.md).
+## Confirmed engineering results
 
-## Design at a glance
+Verified on **29 October 2026** with the existing OSS CAD Suite installation:
 
-| Property | Implementation |
+| Item | Confirmed result |
 |---|---|
-| Operation | `C = A × B`, two fixed 4 × 4 matrices |
-| Compute array | 16 PEs, arranged as 4 rows × 4 columns |
-| Operand format | Signed 8-bit two's-complement integers |
-| PE arithmetic | Signed 16-bit product, sign-extended into a 32-bit accumulator |
-| Input interface | Two 128-bit packed matrices |
-| Output interface | Sixteen 32-bit results packed into `c_flat[511:0]` |
-| Scheduling | One CLEAR state, then 10 enabled RUN cycles (`cycle = 0…9`) |
-| Control | Synchronous active-high reset; `start` request; one-cycle `done` |
+| Extended top-level verification | **24 / 24 matrix tests passed; 0 errors** |
+| Output checks in the extended suite | **384 comparisons** (24 matrices x 16 elements) |
+| Directed cases | Zero, Identity, Negative, alternating INT8 Boundary |
+| Random cases | 20 signed INT8 matrix pairs |
+| Other regressions | PE, array, controller, feeder, input buffer and directed top-level benches passed |
+| Yosys generic synthesis | **10,724 cells; 1,032 flip-flop bits** |
+| Structural checks | `check -assert` completed; 0 reported problems |
 
-The 10 ns clocks in the testbenches are simulation stimulus, not a measured hardware clock limit. FPGA deployment, synthesis area/timing, power measurements, ASIC implementation, and tape-out have not been demonstrated.
+[Captured logs, VCDs and source hashes](results/runs/2026-10-29/README.md) support these results. [Verification details](docs/verification.md) explain coverage and limitations. Cell counts are generic logic counts, not standard-cell area, PPA or FPGA utilization.
 
 ## Architecture
 
 ```mermaid
 flowchart LR
-    INPUT["A and B: 128 bits each"] --> FEED["matrix_feeder\nSkew and zero padding"]
-    START["clk / rst / start"] --> CTRL["controller\nIDLE → CLEAR → RUN → DONE"]
+    INPUT["A / B: 128 bits each"] --> BUF["Input Buffer<br/>256 register bits"]
+    BUF --> FEED["Matrix Feeder<br/>Row / column skew"]
+    START["start"] --> CTRL["FSM Controller<br/>IDLE -> CLEAR -> RUN -> DONE"]
+    CTRL -->|load| BUF
     CTRL -->|cycle and en| FEED
-    CTRL -->|clear and en| ARRAY["systolic_array\n4 × 4 processing elements"]
-    FEED -->|"a_left: four INT8 lanes →"| ARRAY
-    FEED -->|"b_top: four INT8 lanes ↓"| ARRAY
-    ARRAY --> C["c_flat: sixteen INT32 results"]
+    CTRL -->|clear and en| ARRAY["4 x 4 Systolic Array<br/>16 Processing Elements"]
+    FEED -->|"A moves right; B moves down"| ARRAY
+    ARRAY --> RESULT["c_flat: 16 x INT32"]
     CTRL --> DONE["done"]
 ```
 
-All three blocks are integrated by [`tiny_npu_top`](rtl/tiny_npu_top.sv); `clk` and `rst` reach the clocked controller and array.
+Synchronous active-high `rst` resets the clocked modules. Six RTL modules implement the design:
 
-| Block | Source | Responsibility |
-|---|---|---|
-| Processing Element | [pe.sv](rtl/pe.sv) | Computes `acc ← acc + a_in × b_in`; registers A to the right and B downward on each enabled edge. Reset or clear zeros all three registers; disabling holds them. |
-| Systolic Array | [systolic.sv](rtl/systolic.sv) | Uses nested generate loops to instantiate 16 PEs. Each PE retains one output element locally. |
-| Controller | [controller.sv](rtl/controller.sv) | Sequences IDLE, CLEAR, RUN and DONE; supplies the feeder cycle and array controls. |
-| Matrix Feeder | [matrix_feeder.sv](rtl/matrix_feeder.sv) | Combinationally selects four A row lanes and four B column lanes, inserting the required skew and padding zeros. |
-| Top level | [tiny_npu_top.sv](rtl/tiny_npu_top.sv) | Connects the packed matrix interface to the feeder, controller and compute array. |
+| Module | Implementation and responsibility |
+|---|---|
+| [tiny_npu_top](rtl/tiny_npu_top.sv) | Integrates controller, buffer, feeder and array; exposes packed matrix ports, `start` and `done`. |
+| [input_buffer](rtl/input_buffer.sv) | Captures two 128-bit matrices on a rising edge with `load=1`; holds them throughout computation. Registers, not SRAM. |
+| [controller](rtl/controller.sv) | Generates `load`, `clear`, `en` and a four-bit cycle count through IDLE, CLEAR, RUN and DONE. |
+| [matrix_feeder](rtl/matrix_feeder.sv) | Combinationally selects four A row lanes and four B column lanes with cycle-dependent skew and zero padding. |
+| [systolic_array](rtl/systolic.sv) | Nested generate loops instantiate 16 PEs with registered horizontal A and vertical B links. Each PE owns one output element. |
+| [pe](rtl/pe.sv) | Signed 8 x 8 multiplication, 16-bit product, explicit sign extension and 32-bit accumulation. Forwards operands when enabled; reset/clear zeros state; disabling holds state. |
 
-## Matrix multiplication dataflow
+[Architecture and interface details](docs/architecture.md) describe timing. An [existing PE structure drawing](docs/diagrams/pe_structure.svg) is preserved as supporting material; its original generation command/source revision was not recorded.
 
-For zero-based row `r`, column `c` and inner index `k`:
+## Cycle-by-cycle dataflow
 
-```text
-C[r,c] = Σ A[r,k] × B[k,c],  k = 0…3
-
-At RUN cycle t:
-  left lane r = A[r,t-r]    if 0 ≤ t-r < 4, otherwise 0
-  top lane c  = B[t-c,c]    if 0 ≤ t-c < 4, otherwise 0
-
-Inside the array:
-  A travels right → one PE per enabled clock edge
-  B travels down  ↓ one PE per enabled clock edge
-  C stays in its PE accumulator (output-stationary)
-```
-
-The matching operands for term `k` meet at PE `[r,c]` on RUN edge `t = r + c + k`. The final term reaches PE `[3,3]` at `t = 9`, explaining the ten RUN cycles. Boundary inputs become zero while the last operands continue propagating through the array.
-
-Example from the existing array and top-level testbenches:
+For zero-based row `r`, column `c`, and inner index `k`:
 
 ```text
-A = [ 1  2  3  4 ]    B = [ 1  0  2  0 ]    C = [  4   6   5   8 ]
-    [ 5  6  7  8 ]        [ 0  1  0  2 ]        [ 12  14  17  20 ]
-    [ 9 10 11 12 ]        [ 1  0  1  0 ]        [ 20  22  29  32 ]
-    [13 14 15 16 ]        [ 0  1  0  1 ]        [ 28  30  41  44 ]
+C[r,c] = sum_k A[r,k] * B[k,c], k = 0..3
+
+RUN cycle t:
+  left lane r = A[r,t-r]  when 0 <= t-r < 4; otherwise 0
+  top lane c  = B[t-c,c]  when 0 <= t-c < 4; otherwise 0
+
+A moves right, B moves down, one PE per enabled edge.
+Matching operands meet at PE[r,c] on RUN edge t = r + c + k.
+The partial sum stays inside that PE (output-stationary).
 ```
 
-## Interface and use
+The last product reaches PE `[3,3]` at `t=9`. RUN therefore performs ten enabled sampling edges, including propagation after boundary lanes have returned to zero. This fixed schedule is an RTL cycle property, not a measured hardware frequency.
 
-Matrices use row-major packing with the first element in the least-significant bits:
+| FSM state | Control and operation |
+|---|---|
+| IDLE | Wait for `start`; no queued requests. |
+| CLEAR | Assert `load` and `clear`. On the edge leaving CLEAR, capture A/B and zero PE registers. |
+| RUN | Assert `en`; feeder reads buffered inputs; sample cycles 0 through 9. |
+| DONE | Assert `done` for one cycle, then return to IDLE. |
+
+If `start` is accepted on E0, matrices are captured on E1, compute edges are E2-E11, and `done` is high after E11. Hold external matrices stable through E1; they may change after capture. Input buffering is the principal datapath addition since the previous release, which used live input ports.
+
+## RTL interface and design choices
+
+| Signal / property | Format or behavior |
+|---|---|
+| `a_matrix`, `b_matrix` | Two row-major 128-bit inputs, 16 signed INT8 bit patterns each |
+| `c_flat` | Row-major 512-bit output, 16 signed INT32 bit patterns |
+| `clk`, `rst` | Rising-edge clock; synchronous active-high reset |
+| `start` | Accepted in IDLE; pulse for one clock |
+| `done` | One-cycle result-valid indication; results hold until clear/reset |
+| Input storage | 256 flip-flop bits; one pair, no double buffering |
+| Compute storage | 16 x (8-bit A + 8-bit B + 32-bit accumulator) = 768 register bits |
 
 ```systemverilog
-a_matrix[(r*4+c)*8 +: 8]   // A[r,c], signed INT8 bit pattern
-b_matrix[(r*4+c)*8 +: 8]   // B[r,c], signed INT8 bit pattern
-c_flat[(r*4+c)*32 +: 32]   // C[r,c]; use $signed(...) when interpreting it
+a_matrix[(r*4+c)*8 +: 8]   // A[r,c]
+b_matrix[(r*4+c)*8 +: 8]   // B[r,c]
+$signed(c_flat[(r*4+c)*32 +: 32]) // C[r,c]
 ```
 
-Assert `rst` across a rising edge, then deassert it. Present the two matrices and pulse `start` for one clock while the controller is idle. Hold the matrices stable until `done`: the feeder reads the input ports directly and there are no input matrix registers. Sample results when `done` is high. They remain stored until reset or the next CLEAR.
+Packed ports carry bit patterns; signed interpretation occurs in the PE and result checks. Local accumulators avoid moving partial sums between PEs. Fixed dimensions and RUN length keep control simple. There is no busy/ready interface: requests during CLEAR/RUN/DONE are not accepted; holding `start` high can launch another operation after return to IDLE.
 
-`start` is accepted only in IDLE; there is no busy/ready port or request queue. A continuously asserted `start` can launch another operation after the controller returns to IDLE. The controller enters CLEAR on the accepting edge, RUN on the next edge, and asserts `done` after the tenth RUN sampling edge (11 clock periods after acceptance).
+## Functional verification
 
-## Verification and simulation material
+The [extended bench](tb/tb_tiny_npu_extended.sv) calculates a reference dot product using signed input slices, waits for `done` with a 20-cycle bound, and compares all 16 outputs. It runs four fixed matrix pairs followed by twenty `$urandom_range(0,255)-128` pairs. The captured run confirms **24 PASS markers, 384 output comparisons and zero errors**.
 
-Five testbenches cover the PE, array, controller, feeder and integrated top level. The array and top-level benches compare all 16 output elements against a software-style reference calculation. The feeder bench prints its schedule and checks disabled outputs; it does not automatically compare every active lane.
+Seven existing benches were run without editing their test logic. The buffer bench checks reset, load, hold while external values change, and a second load. The feeder bench prints its active schedule and asserts disabled outputs; active lanes are not individually self-checked. The controller bench checks state outputs and RUN length but does not directly assert the added `load` output. Integrated tests hold matrix inputs stable during RUN, so adversarial top-level input changes after capture remain a coverage gap.
 
-- [Verification report](docs/verification.md): test scope, evidence provenance and limitations.
-- [Archived waveforms](results/waveforms/): byte-for-byte copies of the existing VCD files.
-- [Waveform-derived result](results/top_waveform_summary.md): values extracted from the archived top-level VCD, with a source hash.
-- [Original interactive dataflow demonstration](TinyNPU_AB_4x4_Interactive.html): download and open locally; an educational animation, not a simulator trace.
-- [Original demonstration video](TinyNPU_dataflow_demo.mp4).
+The runner checks process status and success/failure text: the extended and buffer benches print failure summaries without necessarily exiting nonzero. The existing bench does not explicitly seed its RNG; the saved VCD captures actual tested inputs. Cross-simulator random sequences are not guaranteed to match. This is not exhaustive, formal or coverage-driven verification.
 
-### Optional reproduction
+## Generic synthesis
 
-Requires Icarus Verilog (`iverilog`, `vvp`) on PATH. From the repository root:
+[The Yosys script](scripts/synth.ys) reads the original SystemVerilog, checks hierarchy, runs `synth -top tiny_npu_top`, then `check -assert` and `stat`. No RTL conversion or functional rewrite is used.
+
+| Tool / statistic | Observed result |
+|---|---|
+| Yosys | 0.69+270, git `c4a0a2c48` |
+| Top | `tiny_npu_top` |
+| Total cells including submodules | 10,724 |
+| Enabled synchronous-reset flip-flops | 1,028 x `$_SDFFE_PP0P_` |
+| Other flip-flops | 4 x `$_DFF_P_` |
+| Total flip-flop bits | 1,032 (1,028 + 4) |
+| Memories | 0 |
+
+The 1,032 bits comprise 768 PE bits, 256 input-buffer bits and 8 controller bits in this mapping. The [full synthesis log](results/runs/2026-10-29/yosys_synth.log) retains diagnostics, including ABC combinational-network warnings. Structural checks complete with zero problems; this is not formal equivalence proof. No target Liberty library, timing constraints, FPGA device, placement, routing, STA or power flow is applied. Counts can change with tool versions/options.
+
+## Reproduction
+
+Requires Python 3, Icarus Verilog and Yosys on PATH; the runner uses only the Python standard library. The checked run used Icarus Verilog 14.0 (devel), `s20260301-541-gb25510638-dirty`, and Yosys as above from OSS CAD Suite 20261009. On Windows use the suite's configured shell with both `bin` and `lib` available.
+
+From the repository root, choose a **new** output directory:
 
 ```powershell
-# Keep rerun outputs separate from the archived evidence.
-New-Item -ItemType Directory -Force build/sim | Out-Null
-iverilog -g2012 -s tb_tiny_npu_top -o build/top.vvp rtl/pe.sv rtl/systolic.sv rtl/controller.sv rtl/matrix_feeder.sv rtl/tiny_npu_top.sv tb/tb_tiny_npu_top.sv
-Push-Location build
-vvp top.vvp
-Pop-Location
+# All seven benches plus synthesis. Existing output directories are refused.
+python scripts/run_checks.py --output build/my-run
+
+# Optional separate stages; each needs a different new directory.
+python scripts/run_checks.py --mode sim --output build/my-sim
+python scripts/run_checks.py --mode synth --output build/my-synth
 ```
 
-The testbench writes `sim/tiny_npu_top.vcd` relative to its working directory, so this command produces `build/sim/tiny_npu_top.vcd`. Expected success text is `ALL TINYNPU TOP TESTS PASSED`; that string is a testbench expectation, not a newly captured log. Optional waveform viewing: `gtkwave results/waveforms/tiny_npu_top.vcd`.
+Equivalent direct commands for the extended suite and synthesis:
 
-## Repository guide
+```powershell
+New-Item -ItemType Directory build/manual-run/sim | Out-Null
+iverilog -g2012 -s tb_tiny_npu_extended -o build/manual-run/extended.vvp rtl/pe.sv rtl/systolic.sv rtl/input_buffer.sv rtl/controller.sv rtl/matrix_feeder.sv rtl/tiny_npu_top.sv tb/tb_tiny_npu_extended.sv
+Push-Location build/manual-run
+vvp extended.vvp
+Pop-Location
+yosys -s scripts/synth.ys
+```
+
+Use a new directory for the direct example too. Testbenches write VCDs relative to their working directory; the runner isolates them from original `sim/` and archived evidence. Its manifest records commands and source/artifact hashes. See [the evidence index](results/runs/2026-10-29/README.md).
+
+## Repository structure
 
 ```text
-rtl/                      Original SystemVerilog design modules
-tb/                       Original five testbenches
-sim/                      Original local simulation artifacts (ignored)
-results/waveforms/        Curated copies of real VCD evidence
-results/                  Waveform extraction summary
-docs/                     Verification, publication notes and original learning material
-docs/archive/             Preserved original README versions
-scripts/                  Reproducible extraction of saved waveform evidence
-build/                    Optional rerun outputs (ignored)
+rtl/                       Six SystemVerilog modules
+tb/                        Seven testbenches
+scripts/run_checks.py      Simulation / synthesis runner
+scripts/synth.ys           Generic Yosys flow
+results/runs/2026-10-29/    Logs, VCDs and source/artifact hashes
+results/waveforms/          Preserved earlier VCD evidence
+docs/                      Architecture, verification and original notes
+docs/diagrams/              Existing PE structure SVG
+docs/archive/               Earlier presentation documents
+sim/                       Original local artifacts (ignored, retained locally)
+build/                     Isolated rerun output (ignored)
 ```
 
-The original learning notes and images are indexed in [the material guide](docs/materials.md). Some original notes are in Chinese. They are retained as development history; this README and the verification report are the primary English presentation documents.
+The [material guide](docs/materials.md) indexes original notes, images, video and the [Chinese interactive illustration](TinyNPU_AB_4x4_Interactive.html). The illustration is conceptual, not a simulator trace.
 
-## Scope and next steps
+## Limitations and future work
 
-Completed: modular RTL, signed MAC datapath, fixed 4 × 4 spatial array, skewed matrix feeding, finite-state sequencing, integration, directed testbenches and saved simulation traces.
+The kernel has fixed 4 x 4 dimensions, INT8 inputs, INT32 accumulators and a parallel packed interface. Input buffering uses registers, not SRAM. There is no SRAM subsystem, DMA, AXI bus, instruction set, configurable quantization, activation pipeline or full neural-network execution stack. No FPGA deployment, ASIC physical implementation, measured frequency, area, power or tape-out is claimed.
 
-Potential extensions: automated signed-boundary and randomized tests, reset/restart sequences, a fully self-checking feeder bench, parameterized dimensions, a buffered streaming interface, and synthesis/FPGA evaluation. These are future work, not completed results. TinyNPU currently implements a matrix multiplication kernel rather than a programmable neural-network processor.
+Future work includes banked on-chip SRAM and tiling/data reuse; streaming and DMA/AXI integration; scaling, rounding and saturation for quantization; configurable dimensions and compute modes; explicit random seeds, assertions and coverage; FPGA implementation; and technology-mapped synthesis, constrained STA and physical design for an ASIC target.
 
 ## License
 
-The existing upstream repository uses the [MIT License](LICENSE), copyright 2026 QueenMary-2. Its license and initial commit are retained in the prepared publication checkout. See [publication notes](docs/publication_notes.md) for the local Git arrangement.
+[MIT License](LICENSE), copyright 2026 QueenMary-2. Existing Initial commit and subsequent project history are retained.

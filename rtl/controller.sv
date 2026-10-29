@@ -6,6 +6,7 @@ module controller(
     output logic clear,
     output logic en,
     output logic done,
+    output logic load,
     output logic [3:0] cycle
 );
     typedef enum logic [1:0] {
@@ -42,13 +43,18 @@ module controller(
             end
         endcase
     end
+
     always_comb begin
         clear=1'b0;
         en=1'b0;
         done=1'b0;
+        load=1'b0;
 
         case (state)
-            CLEAR:clear=1'b1;
+            CLEAR:begin
+                clear=1'b1;
+                load=1'b1;
+            end
             RUN:en=1'b1;
             DONE:done=1'b1;
             default:;

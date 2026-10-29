@@ -1,0 +1,6 @@
+# Generic logic synthesis, not a technology-library or FPGA implementation.
+read_verilog -sv rtl/pe.sv rtl/systolic.sv rtl/input_buffer.sv rtl/controller.sv rtl/matrix_feeder.sv rtl/tiny_npu_top.sv
+hierarchy -check -top tiny_npu_top
+synth -top tiny_npu_top
+check -assert
+stat

@@ -1,0 +1,2178 @@
+
+ /----------------------------------------------------------------------------\
+ |  yosys -- Yosys Open SYnthesis Suite                                       |
+ |  Copyright (C) 2012 - 2026  Claire Xenia Wolf <claire@yosyshq.com>         |
+ |  Distributed under an ISC-like license, type "license" to see terms        |
+ \----------------------------------------------------------------------------/
+ Yosys 0.69+270 (git sha1 c4a0a2c48, Release, GNU /usr/bin/x86_64-w64-mingw32-g++ 15.2.1)
+
+-- Executing script file `scripts/synth.ys' --
+
+1. Executing Verilog-2005 frontend: rtl/pe.sv
+Parsing SystemVerilog input from `rtl/pe.sv' to AST representation.
+Generating RTLIL representation for module `\pe'.
+Successfully finished Verilog frontend.
+
+2. Executing Verilog-2005 frontend: rtl/systolic.sv
+Parsing SystemVerilog input from `rtl/systolic.sv' to AST representation.
+Generating RTLIL representation for module `\systolic_array'.
+Successfully finished Verilog frontend.
+
+3. Executing Verilog-2005 frontend: rtl/input_buffer.sv
+Parsing SystemVerilog input from `rtl/input_buffer.sv' to AST representation.
+Generating RTLIL representation for module `\input_buffer'.
+Successfully finished Verilog frontend.
+
+4. Executing Verilog-2005 frontend: rtl/controller.sv
+Parsing SystemVerilog input from `rtl/controller.sv' to AST representation.
+Generating RTLIL representation for module `\controller'.
+Successfully finished Verilog frontend.
+
+5. Executing Verilog-2005 frontend: rtl/matrix_feeder.sv
+Parsing SystemVerilog input from `rtl/matrix_feeder.sv' to AST representation.
+Generating RTLIL representation for module `\matrix_feeder'.
+Successfully finished Verilog frontend.
+
+6. Executing Verilog-2005 frontend: rtl/tiny_npu_top.sv
+Parsing SystemVerilog input from `rtl/tiny_npu_top.sv' to AST representation.
+Generating RTLIL representation for module `\tiny_npu_top'.
+Successfully finished Verilog frontend.
+
+7. Executing HIERARCHY pass (managing design hierarchy).
+
+7.1. Analyzing design hierarchy..
+Top module:  \tiny_npu_top
+Used module:     \systolic_array
+Used module:         \pe
+Used module:     \matrix_feeder
+Used module:     \input_buffer
+Used module:     \controller
+
+7.2. Analyzing design hierarchy..
+Top module:  \tiny_npu_top
+Used module:     \systolic_array
+Used module:         \pe
+Used module:     \matrix_feeder
+Used module:     \input_buffer
+Used module:     \controller
+Removed 0 unused modules.
+
+8. Executing SYNTH pass.
+
+8.1. Executing HIERARCHY pass (managing design hierarchy).
+
+8.1.1. Analyzing design hierarchy..
+Top module:  \tiny_npu_top
+Used module:     \systolic_array
+Used module:         \pe
+Used module:     \matrix_feeder
+Used module:     \input_buffer
+Used module:     \controller
+
+8.1.2. Analyzing design hierarchy..
+Top module:  \tiny_npu_top
+Used module:     \systolic_array
+Used module:         \pe
+Used module:     \matrix_feeder
+Used module:     \input_buffer
+Used module:     \controller
+Removed 0 unused modules.
+
+8.2. Executing PROC pass (convert processes to netlists).
+
+8.2.1. Executing PROC_CLEAN pass (remove empty switches from decision trees).
+Cleaned up 0 empty switches.
+
+8.2.2. Executing PROC_RMDEAD pass (remove dead branches from decision trees).
+Marked 9 switch rules as full_case in process $proc$rtl/matrix_feeder.sv:12$156 in module matrix_feeder.
+Marked 3 switch rules as full_case in process $proc$rtl/controller.sv:64$145 in module controller.
+Marked 1 switch rules as full_case in process $proc$rtl/controller.sv:47$144 in module controller.
+Removed 1 dead cases from process $proc$rtl/controller.sv:20$142 in module controller.
+Marked 3 switch rules as full_case in process $proc$rtl/controller.sv:20$142 in module controller.
+Marked 1 switch rules as full_case in process $proc$rtl/input_buffer.sv:11$141 in module input_buffer.
+Marked 1 switch rules as full_case in process $proc$rtl/pe.sv:16$2 in module pe.
+Removed a total of 1 dead cases.
+
+8.2.3. Executing PROC_PRUNE pass (remove redundant assignments in processes).
+Removed 1 redundant assignment.
+Promoted 66 assignments to connections.
+
+8.2.4. Executing PROC_INIT pass (extract init attributes).
+
+8.2.5. Executing PROC_ARST pass (detect async resets in processes).
+
+8.2.6. Executing PROC_ROM pass (convert switches to ROMs).
+Converted 0 switches.
+<suppressed ~21 debug messages>
+
+8.2.7. Executing PROC_MUX pass (convert decision trees to multiplexers).
+Creating decoders for process `\matrix_feeder.$proc$rtl/matrix_feeder.sv:12$156'.
+     1/19: $1\b_top[31:0] [31:24]
+     2/19: $4\b_top[23:16]
+     3/19: $3\b_top[15:8]
+     4/19: $2\b_top[7:0]
+     5/19: $5\a_left[31:24]
+     6/19: $4\a_left[23:16]
+     7/19: $3\a_left[15:8]
+     8/19: $2\a_left[7:0]
+     9/19: $1$fordecl_block$154.j[31:0]$160
+    10/19: $1\b_top[31:0] [23:16]
+    11/19: $1\k[31:0]
+    12/19: $1\b_top[31:0] [15:8]
+    13/19: $1\b_top[31:0] [7:0]
+    14/19: $1\a_left[31:0] [31:24]
+    15/19: $1$fordecl_block$152.i[31:0]$159
+    16/19: $1\a_left[31:0] [23:16]
+    17/19: $1\a_left[31:0] [15:8]
+    18/19: $1\a_left[31:0] [7:0]
+    19/19: $5\b_top[31:24]
+Creating decoders for process `\controller.$proc$rtl/controller.sv:64$145'.
+     1/2: $0\state[1:0]
+     2/2: $0\cycle[3:0]
+Creating decoders for process `\controller.$proc$rtl/controller.sv:47$144'.
+     1/4: $1\load[0:0]
+     2/4: $1\clear[0:0]
+     3/4: $1\done[0:0]
+     4/4: $1\en[0:0]
+Creating decoders for process `\controller.$proc$rtl/controller.sv:20$142'.
+     1/3: $3\next_state[1:0]
+     2/3: $2\next_state[1:0]
+     3/3: $1\next_state[1:0]
+Creating decoders for process `\input_buffer.$proc$rtl/input_buffer.sv:11$141'.
+     1/2: $0\b_reg[127:0]
+     2/2: $0\a_reg[127:0]
+Creating decoders for process `\systolic_array.$proc$rtl/systolic.sv:35$140'.
+Creating decoders for process `\systolic_array.$proc$rtl/systolic.sv:34$139'.
+Creating decoders for process `\systolic_array.$proc$rtl/systolic.sv:33$138'.
+Creating decoders for process `\systolic_array.$proc$rtl/systolic.sv:35$137'.
+Creating decoders for process `\systolic_array.$proc$rtl/systolic.sv:34$136'.
+Creating decoders for process `\systolic_array.$proc$rtl/systolic.sv:33$135'.
+Creating decoders for process `\systolic_array.$proc$rtl/systolic.sv:35$134'.
+Creating decoders for process `\systolic_array.$proc$rtl/systolic.sv:34$133'.
+Creating decoders for process `\systolic_array.$proc$rtl/systolic.sv:33$132'.
+Creating decoders for process `\systolic_array.$proc$rtl/systolic.sv:35$131'.
+Creating decoders for process `\systolic_array.$proc$rtl/systolic.sv:34$130'.
+Creating decoders for process `\systolic_array.$proc$rtl/systolic.sv:33$129'.
+Creating decoders for process `\systolic_array.$proc$rtl/systolic.sv:35$128'.
+Creating decoders for process `\systolic_array.$proc$rtl/systolic.sv:34$127'.
+Creating decoders for process `\systolic_array.$proc$rtl/systolic.sv:33$126'.
+Creating decoders for process `\systolic_array.$proc$rtl/systolic.sv:35$125'.
+Creating decoders for process `\systolic_array.$proc$rtl/systolic.sv:34$124'.
+Creating decoders for process `\systolic_array.$proc$rtl/systolic.sv:33$123'.
+Creating decoders for process `\systolic_array.$proc$rtl/systolic.sv:35$122'.
+Creating decoders for process `\systolic_array.$proc$rtl/systolic.sv:34$121'.
+Creating decoders for process `\systolic_array.$proc$rtl/systolic.sv:33$120'.
+Creating decoders for process `\systolic_array.$proc$rtl/systolic.sv:35$119'.
+Creating decoders for process `\systolic_array.$proc$rtl/systolic.sv:34$118'.
+Creating decoders for process `\systolic_array.$proc$rtl/systolic.sv:33$117'.
+Creating decoders for process `\systolic_array.$proc$rtl/systolic.sv:35$116'.
+Creating decoders for process `\systolic_array.$proc$rtl/systolic.sv:34$115'.
+Creating decoders for process `\systolic_array.$proc$rtl/systolic.sv:33$114'.
+Creating decoders for process `\systolic_array.$proc$rtl/systolic.sv:35$113'.
+Creating decoders for process `\systolic_array.$proc$rtl/systolic.sv:34$112'.
+Creating decoders for process `\systolic_array.$proc$rtl/systolic.sv:33$111'.
+Creating decoders for process `\systolic_array.$proc$rtl/systolic.sv:35$110'.
+Creating decoders for process `\systolic_array.$proc$rtl/systolic.sv:34$109'.
+Creating decoders for process `\systolic_array.$proc$rtl/systolic.sv:33$108'.
+Creating decoders for process `\systolic_array.$proc$rtl/systolic.sv:35$107'.
+Creating decoders for process `\systolic_array.$proc$rtl/systolic.sv:34$106'.
+Creating decoders for process `\systolic_array.$proc$rtl/systolic.sv:33$105'.
+Creating decoders for process `\systolic_array.$proc$rtl/systolic.sv:35$104'.
+Creating decoders for process `\systolic_array.$proc$rtl/systolic.sv:34$103'.
+Creating decoders for process `\systolic_array.$proc$rtl/systolic.sv:33$102'.
+Creating decoders for process `\systolic_array.$proc$rtl/systolic.sv:35$101'.
+Creating decoders for process `\systolic_array.$proc$rtl/systolic.sv:34$100'.
+Creating decoders for process `\systolic_array.$proc$rtl/systolic.sv:33$99'.
+Creating decoders for process `\systolic_array.$proc$rtl/systolic.sv:35$98'.
+Creating decoders for process `\systolic_array.$proc$rtl/systolic.sv:34$97'.
+Creating decoders for process `\systolic_array.$proc$rtl/systolic.sv:33$96'.
+Creating decoders for process `\systolic_array.$proc$rtl/systolic.sv:35$95'.
+Creating decoders for process `\systolic_array.$proc$rtl/systolic.sv:34$94'.
+Creating decoders for process `\systolic_array.$proc$rtl/systolic.sv:33$93'.
+Creating decoders for process `\systolic_array.$proc$rtl/systolic.sv:21$92'.
+Creating decoders for process `\systolic_array.$proc$rtl/systolic.sv:21$91'.
+Creating decoders for process `\systolic_array.$proc$rtl/systolic.sv:21$90'.
+Creating decoders for process `\systolic_array.$proc$rtl/systolic.sv:21$89'.
+Creating decoders for process `\systolic_array.$proc$rtl/systolic.sv:18$88'.
+Creating decoders for process `\systolic_array.$proc$rtl/systolic.sv:18$87'.
+Creating decoders for process `\systolic_array.$proc$rtl/systolic.sv:18$86'.
+Creating decoders for process `\systolic_array.$proc$rtl/systolic.sv:18$85'.
+Creating decoders for process `\pe.$proc$rtl/pe.sv:16$2'.
+     1/3: $0\acc[31:0]
+     2/3: $0\b_out[7:0]
+     3/3: $0\a_out[7:0]
+
+8.2.8. Executing PROC_DLATCH pass (convert process syncs to latches).
+No latch inferred for signal `\matrix_feeder.\a_left' from process `\matrix_feeder.$proc$rtl/matrix_feeder.sv:12$156'.
+No latch inferred for signal `\matrix_feeder.\b_top' from process `\matrix_feeder.$proc$rtl/matrix_feeder.sv:12$156'.
+No latch inferred for signal `\matrix_feeder.\k' from process `\matrix_feeder.$proc$rtl/matrix_feeder.sv:12$156'.
+No latch inferred for signal `\controller.\clear' from process `\controller.$proc$rtl/controller.sv:47$144'.
+No latch inferred for signal `\controller.\en' from process `\controller.$proc$rtl/controller.sv:47$144'.
+No latch inferred for signal `\controller.\load' from process `\controller.$proc$rtl/controller.sv:47$144'.
+No latch inferred for signal `\controller.\done' from process `\controller.$proc$rtl/controller.sv:47$144'.
+No latch inferred for signal `\controller.\next_state' from process `\controller.$proc$rtl/controller.sv:20$142'.
+No latch inferred for signal `\systolic_array.\acc_link[15]' from process `\systolic_array.$proc$rtl/systolic.sv:35$140'.
+No latch inferred for signal `\systolic_array.\b_link[19]' from process `\systolic_array.$proc$rtl/systolic.sv:34$139'.
+No latch inferred for signal `\systolic_array.\a_link[19]' from process `\systolic_array.$proc$rtl/systolic.sv:33$138'.
+No latch inferred for signal `\systolic_array.\acc_link[14]' from process `\systolic_array.$proc$rtl/systolic.sv:35$137'.
+No latch inferred for signal `\systolic_array.\b_link[18]' from process `\systolic_array.$proc$rtl/systolic.sv:34$136'.
+No latch inferred for signal `\systolic_array.\a_link[18]' from process `\systolic_array.$proc$rtl/systolic.sv:33$135'.
+No latch inferred for signal `\systolic_array.\acc_link[13]' from process `\systolic_array.$proc$rtl/systolic.sv:35$134'.
+No latch inferred for signal `\systolic_array.\b_link[17]' from process `\systolic_array.$proc$rtl/systolic.sv:34$133'.
+No latch inferred for signal `\systolic_array.\a_link[17]' from process `\systolic_array.$proc$rtl/systolic.sv:33$132'.
+No latch inferred for signal `\systolic_array.\acc_link[12]' from process `\systolic_array.$proc$rtl/systolic.sv:35$131'.
+No latch inferred for signal `\systolic_array.\b_link[16]' from process `\systolic_array.$proc$rtl/systolic.sv:34$130'.
+No latch inferred for signal `\systolic_array.\a_link[16]' from process `\systolic_array.$proc$rtl/systolic.sv:33$129'.
+No latch inferred for signal `\systolic_array.\acc_link[11]' from process `\systolic_array.$proc$rtl/systolic.sv:35$128'.
+No latch inferred for signal `\systolic_array.\b_link[15]' from process `\systolic_array.$proc$rtl/systolic.sv:34$127'.
+No latch inferred for signal `\systolic_array.\a_link[14]' from process `\systolic_array.$proc$rtl/systolic.sv:33$126'.
+No latch inferred for signal `\systolic_array.\acc_link[10]' from process `\systolic_array.$proc$rtl/systolic.sv:35$125'.
+No latch inferred for signal `\systolic_array.\b_link[14]' from process `\systolic_array.$proc$rtl/systolic.sv:34$124'.
+No latch inferred for signal `\systolic_array.\a_link[13]' from process `\systolic_array.$proc$rtl/systolic.sv:33$123'.
+No latch inferred for signal `\systolic_array.\acc_link[9]' from process `\systolic_array.$proc$rtl/systolic.sv:35$122'.
+No latch inferred for signal `\systolic_array.\b_link[13]' from process `\systolic_array.$proc$rtl/systolic.sv:34$121'.
+No latch inferred for signal `\systolic_array.\a_link[12]' from process `\systolic_array.$proc$rtl/systolic.sv:33$120'.
+No latch inferred for signal `\systolic_array.\acc_link[8]' from process `\systolic_array.$proc$rtl/systolic.sv:35$119'.
+No latch inferred for signal `\systolic_array.\b_link[12]' from process `\systolic_array.$proc$rtl/systolic.sv:34$118'.
+No latch inferred for signal `\systolic_array.\a_link[11]' from process `\systolic_array.$proc$rtl/systolic.sv:33$117'.
+No latch inferred for signal `\systolic_array.\acc_link[7]' from process `\systolic_array.$proc$rtl/systolic.sv:35$116'.
+No latch inferred for signal `\systolic_array.\b_link[11]' from process `\systolic_array.$proc$rtl/systolic.sv:34$115'.
+No latch inferred for signal `\systolic_array.\a_link[9]' from process `\systolic_array.$proc$rtl/systolic.sv:33$114'.
+No latch inferred for signal `\systolic_array.\acc_link[6]' from process `\systolic_array.$proc$rtl/systolic.sv:35$113'.
+No latch inferred for signal `\systolic_array.\b_link[10]' from process `\systolic_array.$proc$rtl/systolic.sv:34$112'.
+No latch inferred for signal `\systolic_array.\a_link[8]' from process `\systolic_array.$proc$rtl/systolic.sv:33$111'.
+No latch inferred for signal `\systolic_array.\acc_link[5]' from process `\systolic_array.$proc$rtl/systolic.sv:35$110'.
+No latch inferred for signal `\systolic_array.\b_link[9]' from process `\systolic_array.$proc$rtl/systolic.sv:34$109'.
+No latch inferred for signal `\systolic_array.\a_link[7]' from process `\systolic_array.$proc$rtl/systolic.sv:33$108'.
+No latch inferred for signal `\systolic_array.\acc_link[4]' from process `\systolic_array.$proc$rtl/systolic.sv:35$107'.
+No latch inferred for signal `\systolic_array.\b_link[8]' from process `\systolic_array.$proc$rtl/systolic.sv:34$106'.
+No latch inferred for signal `\systolic_array.\a_link[6]' from process `\systolic_array.$proc$rtl/systolic.sv:33$105'.
+No latch inferred for signal `\systolic_array.\acc_link[3]' from process `\systolic_array.$proc$rtl/systolic.sv:35$104'.
+No latch inferred for signal `\systolic_array.\b_link[7]' from process `\systolic_array.$proc$rtl/systolic.sv:34$103'.
+No latch inferred for signal `\systolic_array.\a_link[4]' from process `\systolic_array.$proc$rtl/systolic.sv:33$102'.
+No latch inferred for signal `\systolic_array.\acc_link[2]' from process `\systolic_array.$proc$rtl/systolic.sv:35$101'.
+No latch inferred for signal `\systolic_array.\b_link[6]' from process `\systolic_array.$proc$rtl/systolic.sv:34$100'.
+No latch inferred for signal `\systolic_array.\a_link[3]' from process `\systolic_array.$proc$rtl/systolic.sv:33$99'.
+No latch inferred for signal `\systolic_array.\acc_link[1]' from process `\systolic_array.$proc$rtl/systolic.sv:35$98'.
+No latch inferred for signal `\systolic_array.\b_link[5]' from process `\systolic_array.$proc$rtl/systolic.sv:34$97'.
+No latch inferred for signal `\systolic_array.\a_link[2]' from process `\systolic_array.$proc$rtl/systolic.sv:33$96'.
+No latch inferred for signal `\systolic_array.\acc_link[0]' from process `\systolic_array.$proc$rtl/systolic.sv:35$95'.
+No latch inferred for signal `\systolic_array.\b_link[4]' from process `\systolic_array.$proc$rtl/systolic.sv:34$94'.
+No latch inferred for signal `\systolic_array.\a_link[1]' from process `\systolic_array.$proc$rtl/systolic.sv:33$93'.
+No latch inferred for signal `\systolic_array.\b_link[3]' from process `\systolic_array.$proc$rtl/systolic.sv:21$92'.
+No latch inferred for signal `\systolic_array.\b_link[2]' from process `\systolic_array.$proc$rtl/systolic.sv:21$91'.
+No latch inferred for signal `\systolic_array.\b_link[1]' from process `\systolic_array.$proc$rtl/systolic.sv:21$90'.
+No latch inferred for signal `\systolic_array.\b_link[0]' from process `\systolic_array.$proc$rtl/systolic.sv:21$89'.
+No latch inferred for signal `\systolic_array.\a_link[15]' from process `\systolic_array.$proc$rtl/systolic.sv:18$88'.
+No latch inferred for signal `\systolic_array.\a_link[10]' from process `\systolic_array.$proc$rtl/systolic.sv:18$87'.
+No latch inferred for signal `\systolic_array.\a_link[5]' from process `\systolic_array.$proc$rtl/systolic.sv:18$86'.
+No latch inferred for signal `\systolic_array.\a_link[0]' from process `\systolic_array.$proc$rtl/systolic.sv:18$85'.
+
+8.2.9. Executing PROC_DFF pass (convert process syncs to FFs).
+Creating register for signal `\controller.\cycle' using process `\controller.$proc$rtl/controller.sv:64$145'.
+  created $dff cell `$procdff$385' with positive edge clock.
+Creating register for signal `\controller.\state' using process `\controller.$proc$rtl/controller.sv:64$145'.
+  created $dff cell `$procdff$386' with positive edge clock.
+Creating register for signal `\input_buffer.\a_reg' using process `\input_buffer.$proc$rtl/input_buffer.sv:11$141'.
+  created $dff cell `$procdff$387' with positive edge clock.
+Creating register for signal `\input_buffer.\b_reg' using process `\input_buffer.$proc$rtl/input_buffer.sv:11$141'.
+  created $dff cell `$procdff$388' with positive edge clock.
+Creating register for signal `\pe.\a_out' using process `\pe.$proc$rtl/pe.sv:16$2'.
+  created $dff cell `$procdff$389' with positive edge clock.
+Creating register for signal `\pe.\b_out' using process `\pe.$proc$rtl/pe.sv:16$2'.
+  created $dff cell `$procdff$390' with positive edge clock.
+Creating register for signal `\pe.\acc' using process `\pe.$proc$rtl/pe.sv:16$2'.
+  created $dff cell `$procdff$391' with positive edge clock.
+
+8.2.10. Executing PROC_MEMWR pass (convert process memory writes to cells).
+
+8.2.11. Executing PROC_CLEAN pass (remove empty switches from decision trees).
+Found and cleaned up 9 empty switches in `\matrix_feeder.$proc$rtl/matrix_feeder.sv:12$156'.
+Removing empty process `matrix_feeder.$proc$rtl/matrix_feeder.sv:12$156'.
+Found and cleaned up 4 empty switches in `\controller.$proc$rtl/controller.sv:64$145'.
+Removing empty process `controller.$proc$rtl/controller.sv:64$145'.
+Found and cleaned up 1 empty switch in `\controller.$proc$rtl/controller.sv:47$144'.
+Removing empty process `controller.$proc$rtl/controller.sv:47$144'.
+Found and cleaned up 3 empty switches in `\controller.$proc$rtl/controller.sv:20$142'.
+Removing empty process `controller.$proc$rtl/controller.sv:20$142'.
+Found and cleaned up 2 empty switches in `\input_buffer.$proc$rtl/input_buffer.sv:11$141'.
+Removing empty process `input_buffer.$proc$rtl/input_buffer.sv:11$141'.
+Removing empty process `systolic_array.$proc$rtl/systolic.sv:35$140'.
+Removing empty process `systolic_array.$proc$rtl/systolic.sv:34$139'.
+Removing empty process `systolic_array.$proc$rtl/systolic.sv:33$138'.
+Removing empty process `systolic_array.$proc$rtl/systolic.sv:35$137'.
+Removing empty process `systolic_array.$proc$rtl/systolic.sv:34$136'.
+Removing empty process `systolic_array.$proc$rtl/systolic.sv:33$135'.
+Removing empty process `systolic_array.$proc$rtl/systolic.sv:35$134'.
+Removing empty process `systolic_array.$proc$rtl/systolic.sv:34$133'.
+Removing empty process `systolic_array.$proc$rtl/systolic.sv:33$132'.
+Removing empty process `systolic_array.$proc$rtl/systolic.sv:35$131'.
+Removing empty process `systolic_array.$proc$rtl/systolic.sv:34$130'.
+Removing empty process `systolic_array.$proc$rtl/systolic.sv:33$129'.
+Removing empty process `systolic_array.$proc$rtl/systolic.sv:35$128'.
+Removing empty process `systolic_array.$proc$rtl/systolic.sv:34$127'.
+Removing empty process `systolic_array.$proc$rtl/systolic.sv:33$126'.
+Removing empty process `systolic_array.$proc$rtl/systolic.sv:35$125'.
+Removing empty process `systolic_array.$proc$rtl/systolic.sv:34$124'.
+Removing empty process `systolic_array.$proc$rtl/systolic.sv:33$123'.
+Removing empty process `systolic_array.$proc$rtl/systolic.sv:35$122'.
+Removing empty process `systolic_array.$proc$rtl/systolic.sv:34$121'.
+Removing empty process `systolic_array.$proc$rtl/systolic.sv:33$120'.
+Removing empty process `systolic_array.$proc$rtl/systolic.sv:35$119'.
+Removing empty process `systolic_array.$proc$rtl/systolic.sv:34$118'.
+Removing empty process `systolic_array.$proc$rtl/systolic.sv:33$117'.
+Removing empty process `systolic_array.$proc$rtl/systolic.sv:35$116'.
+Removing empty process `systolic_array.$proc$rtl/systolic.sv:34$115'.
+Removing empty process `systolic_array.$proc$rtl/systolic.sv:33$114'.
+Removing empty process `systolic_array.$proc$rtl/systolic.sv:35$113'.
+Removing empty process `systolic_array.$proc$rtl/systolic.sv:34$112'.
+Removing empty process `systolic_array.$proc$rtl/systolic.sv:33$111'.
+Removing empty process `systolic_array.$proc$rtl/systolic.sv:35$110'.
+Removing empty process `systolic_array.$proc$rtl/systolic.sv:34$109'.
+Removing empty process `systolic_array.$proc$rtl/systolic.sv:33$108'.
+Removing empty process `systolic_array.$proc$rtl/systolic.sv:35$107'.
+Removing empty process `systolic_array.$proc$rtl/systolic.sv:34$106'.
+Removing empty process `systolic_array.$proc$rtl/systolic.sv:33$105'.
+Removing empty process `systolic_array.$proc$rtl/systolic.sv:35$104'.
+Removing empty process `systolic_array.$proc$rtl/systolic.sv:34$103'.
+Removing empty process `systolic_array.$proc$rtl/systolic.sv:33$102'.
+Removing empty process `systolic_array.$proc$rtl/systolic.sv:35$101'.
+Removing empty process `systolic_array.$proc$rtl/systolic.sv:34$100'.
+Removing empty process `systolic_array.$proc$rtl/systolic.sv:33$99'.
+Removing empty process `systolic_array.$proc$rtl/systolic.sv:35$98'.
+Removing empty process `systolic_array.$proc$rtl/systolic.sv:34$97'.
+Removing empty process `systolic_array.$proc$rtl/systolic.sv:33$96'.
+Removing empty process `systolic_array.$proc$rtl/systolic.sv:35$95'.
+Removing empty process `systolic_array.$proc$rtl/systolic.sv:34$94'.
+Removing empty process `systolic_array.$proc$rtl/systolic.sv:33$93'.
+Removing empty process `systolic_array.$proc$rtl/systolic.sv:21$92'.
+Removing empty process `systolic_array.$proc$rtl/systolic.sv:21$91'.
+Removing empty process `systolic_array.$proc$rtl/systolic.sv:21$90'.
+Removing empty process `systolic_array.$proc$rtl/systolic.sv:21$89'.
+Removing empty process `systolic_array.$proc$rtl/systolic.sv:18$88'.
+Removing empty process `systolic_array.$proc$rtl/systolic.sv:18$87'.
+Removing empty process `systolic_array.$proc$rtl/systolic.sv:18$86'.
+Removing empty process `systolic_array.$proc$rtl/systolic.sv:18$85'.
+Found and cleaned up 2 empty switches in `\pe.$proc$rtl/pe.sv:16$2'.
+Removing empty process `pe.$proc$rtl/pe.sv:16$2'.
+Cleaned up 21 empty switches.
+
+8.2.12. Executing OPT_EXPR pass (perform const folding).
+Optimizing module tiny_npu_top.
+Optimizing module matrix_feeder.
+Optimizing module controller.
+<suppressed ~3 debug messages>
+Optimizing module input_buffer.
+Optimizing module systolic_array.
+Optimizing module pe.
+
+8.3. Executing OPT_EXPR pass (perform const folding).
+Optimizing module tiny_npu_top.
+Optimizing module matrix_feeder.
+<suppressed ~36 debug messages>
+Optimizing module controller.
+Optimizing module input_buffer.
+Optimizing module systolic_array.
+Optimizing module pe.
+
+8.4. Executing CHECK pass (checking for obvious problems).
+Checking module tiny_npu_top...
+Checking module matrix_feeder...
+Checking module controller...
+Checking module input_buffer...
+Checking module systolic_array...
+Checking module pe...
+Found and reported 0 problems.
+
+8.5. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \tiny_npu_top..
+Finding unused cells or wires in module \matrix_feeder..
+Finding unused cells or wires in module \controller..
+Finding unused cells or wires in module \input_buffer..
+Finding unused cells or wires in module \systolic_array..
+Finding unused cells or wires in module \pe..
+Removed 3 unused cells and 258 unused wires.
+<suppressed ~21 debug messages>
+
+8.6. Executing OPT pass (performing simple optimizations).
+
+8.6.1. Executing OPT_EXPR pass (perform const folding).
+Optimizing module tiny_npu_top.
+Optimizing module matrix_feeder.
+Optimizing module controller.
+Optimizing module input_buffer.
+Optimizing module systolic_array.
+Optimizing module pe.
+
+8.6.2. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\tiny_npu_top'.
+Computing hashes of 4 cells of `\tiny_npu_top'.
+Finding duplicate cells in `\tiny_npu_top'.
+Finding identical cells in module `\matrix_feeder'.
+Computing hashes of 68 cells of `\matrix_feeder'.
+Finding duplicate cells in `\matrix_feeder'.
+Computing hashes of 63 cells of `\matrix_feeder'.
+Finding duplicate cells in `\matrix_feeder'.
+Computing hashes of 56 cells of `\matrix_feeder'.
+Finding duplicate cells in `\matrix_feeder'.
+Computing hashes of 53 cells of `\matrix_feeder'.
+Finding duplicate cells in `\matrix_feeder'.
+<suppressed ~45 debug messages>
+Finding identical cells in module `\controller'.
+Computing hashes of 33 cells of `\controller'.
+Finding duplicate cells in `\controller'.
+Computing hashes of 24 cells of `\controller'.
+Finding duplicate cells in `\controller'.
+<suppressed ~27 debug messages>
+Finding identical cells in module `\input_buffer'.
+Computing hashes of 6 cells of `\input_buffer'.
+Finding duplicate cells in `\input_buffer'.
+Finding identical cells in module `\systolic_array'.
+Computing hashes of 16 cells of `\systolic_array'.
+Finding duplicate cells in `\systolic_array'.
+Finding identical cells in module `\pe'.
+Computing hashes of 12 cells of `\pe'.
+Finding duplicate cells in `\pe'.
+Removed a total of 24 cells.
+
+8.6.3. Executing OPT_MUXTREE pass (detect dead branches in mux trees).
+Running muxtree optimizer on module \tiny_npu_top..
+  Creating internal representation of mux trees.
+  No muxes found in this module.
+Running muxtree optimizer on module \matrix_feeder..
+  Creating internal representation of mux trees.
+  Evaluating internal representation of mux trees.
+  Analyzing evaluation results.
+    dead port 2/2 on $mux $procmux$266.
+    dead port 2/2 on $mux $procmux$260.
+    dead port 2/2 on $mux $procmux$254.
+    dead port 2/2 on $mux $procmux$272.
+    dead port 2/2 on $mux $procmux$248.
+    dead port 2/2 on $mux $procmux$236.
+    dead port 2/2 on $mux $procmux$308.
+    dead port 2/2 on $mux $procmux$242.
+Running muxtree optimizer on module \controller..
+  Creating internal representation of mux trees.
+  Evaluating internal representation of mux trees.
+  Analyzing evaluation results.
+    dead port 2/2 on $mux $procmux$345.
+    dead port 2/2 on $mux $procmux$353.
+Running muxtree optimizer on module \input_buffer..
+  Creating internal representation of mux trees.
+  Evaluating internal representation of mux trees.
+  Analyzing evaluation results.
+Running muxtree optimizer on module \systolic_array..
+  Creating internal representation of mux trees.
+  No muxes found in this module.
+Running muxtree optimizer on module \pe..
+  Creating internal representation of mux trees.
+  Evaluating internal representation of mux trees.
+  Analyzing evaluation results.
+Removed 10 multiplexer ports.
+<suppressed ~67 debug messages>
+
+8.6.4. Executing OPT_REDUCE pass (consolidate $*mux and $reduce_* inputs).
+  Optimizing cells in module \tiny_npu_top.
+  Optimizing cells in module \matrix_feeder.
+  Optimizing cells in module \controller.
+  Optimizing cells in module \input_buffer.
+  Optimizing cells in module \systolic_array.
+  Optimizing cells in module \pe.
+Performed a total of 0 changes.
+
+8.6.5. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\tiny_npu_top'.
+Computing hashes of 4 cells of `\tiny_npu_top'.
+Finding duplicate cells in `\tiny_npu_top'.
+Finding identical cells in module `\matrix_feeder'.
+Computing hashes of 45 cells of `\matrix_feeder'.
+Finding duplicate cells in `\matrix_feeder'.
+Finding identical cells in module `\controller'.
+Computing hashes of 22 cells of `\controller'.
+Finding duplicate cells in `\controller'.
+Computing hashes of 21 cells of `\controller'.
+Finding duplicate cells in `\controller'.
+<suppressed ~3 debug messages>
+Finding identical cells in module `\input_buffer'.
+Computing hashes of 6 cells of `\input_buffer'.
+Finding duplicate cells in `\input_buffer'.
+Finding identical cells in module `\systolic_array'.
+Computing hashes of 16 cells of `\systolic_array'.
+Finding duplicate cells in `\systolic_array'.
+Finding identical cells in module `\pe'.
+Computing hashes of 12 cells of `\pe'.
+Finding duplicate cells in `\pe'.
+Removed a total of 1 cells.
+
+8.6.6. Executing OPT_DFF pass (perform DFF optimizations).
+
+8.6.7. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \tiny_npu_top..
+Finding unused cells or wires in module \matrix_feeder..
+Finding unused cells or wires in module \controller..
+Finding unused cells or wires in module \input_buffer..
+Finding unused cells or wires in module \systolic_array..
+Finding unused cells or wires in module \pe..
+Removed 0 unused cells and 34 unused wires.
+<suppressed ~2 debug messages>
+
+8.6.8. Executing OPT_EXPR pass (perform const folding).
+Optimizing module tiny_npu_top.
+Optimizing module matrix_feeder.
+Optimizing module controller.
+Optimizing module input_buffer.
+Optimizing module systolic_array.
+Optimizing module pe.
+
+8.6.9. Rerunning OPT passes. (Maybe there is more to do..)
+
+8.6.10. Executing OPT_MUXTREE pass (detect dead branches in mux trees).
+Running muxtree optimizer on module \tiny_npu_top..
+  Creating internal representation of mux trees.
+  No muxes found in this module.
+Running muxtree optimizer on module \matrix_feeder..
+  Creating internal representation of mux trees.
+  Evaluating internal representation of mux trees.
+  Analyzing evaluation results.
+Running muxtree optimizer on module \controller..
+  Creating internal representation of mux trees.
+  Evaluating internal representation of mux trees.
+  Analyzing evaluation results.
+Running muxtree optimizer on module \input_buffer..
+  Creating internal representation of mux trees.
+  Evaluating internal representation of mux trees.
+  Analyzing evaluation results.
+Running muxtree optimizer on module \systolic_array..
+  Creating internal representation of mux trees.
+  No muxes found in this module.
+Running muxtree optimizer on module \pe..
+  Creating internal representation of mux trees.
+  Evaluating internal representation of mux trees.
+  Analyzing evaluation results.
+Removed 0 multiplexer ports.
+<suppressed ~55 debug messages>
+
+8.6.11. Executing OPT_REDUCE pass (consolidate $*mux and $reduce_* inputs).
+  Optimizing cells in module \tiny_npu_top.
+  Optimizing cells in module \matrix_feeder.
+  Optimizing cells in module \controller.
+  Optimizing cells in module \input_buffer.
+  Optimizing cells in module \systolic_array.
+  Optimizing cells in module \pe.
+Performed a total of 0 changes.
+
+8.6.12. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\tiny_npu_top'.
+Computing hashes of 4 cells of `\tiny_npu_top'.
+Finding duplicate cells in `\tiny_npu_top'.
+Finding identical cells in module `\matrix_feeder'.
+Computing hashes of 45 cells of `\matrix_feeder'.
+Finding duplicate cells in `\matrix_feeder'.
+Finding identical cells in module `\controller'.
+Computing hashes of 21 cells of `\controller'.
+Finding duplicate cells in `\controller'.
+Finding identical cells in module `\input_buffer'.
+Computing hashes of 6 cells of `\input_buffer'.
+Finding duplicate cells in `\input_buffer'.
+Finding identical cells in module `\systolic_array'.
+Computing hashes of 16 cells of `\systolic_array'.
+Finding duplicate cells in `\systolic_array'.
+Finding identical cells in module `\pe'.
+Computing hashes of 12 cells of `\pe'.
+Finding duplicate cells in `\pe'.
+Removed a total of 0 cells.
+
+8.6.13. Executing OPT_DFF pass (perform DFF optimizations).
+
+8.6.14. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \tiny_npu_top..
+Finding unused cells or wires in module \matrix_feeder..
+Finding unused cells or wires in module \controller..
+Finding unused cells or wires in module \input_buffer..
+Finding unused cells or wires in module \systolic_array..
+Finding unused cells or wires in module \pe..
+
+8.6.15. Executing OPT_EXPR pass (perform const folding).
+Optimizing module tiny_npu_top.
+Optimizing module matrix_feeder.
+Optimizing module controller.
+Optimizing module input_buffer.
+Optimizing module systolic_array.
+Optimizing module pe.
+
+8.6.16. Finished fast OPT passes. (There is nothing left to do.)
+
+8.7. Executing FSM pass (extract and optimize FSM).
+
+8.7.1. Executing FSM_DETECT pass (finding FSMs in design).
+Found FSM state register controller.state.
+
+8.7.2. Executing FSM_EXTRACT pass (extracting FSM from design).
+Extracting FSM `\state' from module `\controller'.
+  found $dff cell for state register: $procdff$386
+  root of input selection tree: $0\state[1:0]
+  found reset state: 2'00 (guessed from mux tree)
+  found ctrl input: \rst
+  found ctrl input: $procmux$336_CMP
+  found ctrl input: $eq$rtl/controller.sv:74$147_Y
+  found ctrl input: $eq$rtl/controller.sv:72$146_Y
+  found ctrl input: $eq$rtl/controller.sv:76$151_Y
+  found state code: 2'00
+  found ctrl input: $eq$rtl/controller.sv:33$143_Y
+  found state code: 2'11
+  found state code: 2'10
+  found ctrl input: \start
+  found state code: 2'01
+  found ctrl output: $procmux$336_CMP
+  found ctrl output: $eq$rtl/controller.sv:74$147_Y
+  found ctrl output: $eq$rtl/controller.sv:72$146_Y
+  found ctrl output: $eq$rtl/controller.sv:76$151_Y
+  ctrl inputs: { $eq$rtl/controller.sv:33$143_Y \start \rst }
+  ctrl outputs: { $procmux$336_CMP $eq$rtl/controller.sv:76$151_Y $eq$rtl/controller.sv:74$147_Y $eq$rtl/controller.sv:72$146_Y $0\state[1:0] }
+  transition:       2'00 3'-00 ->       2'00 6'010000
+  transition:       2'00 3'-10 ->       2'01 6'010001
+  transition:       2'00 3'--1 ->       2'00 6'010000
+  transition:       2'10 3'0-0 ->       2'10 6'001010
+  transition:       2'10 3'1-0 ->       2'11 6'001011
+  transition:       2'10 3'--1 ->       2'00 6'001000
+  transition:       2'01 3'--0 ->       2'10 6'000110
+  transition:       2'01 3'--1 ->       2'00 6'000100
+  transition:       2'11 3'--0 ->       2'00 6'100000
+  transition:       2'11 3'--1 ->       2'00 6'100000
+
+8.7.3. Executing FSM_OPT pass (simple optimizations of FSMs).
+Optimizing FSM `$fsm$\state$392' from module `\controller'.
+  Merging pattern 3'--0 and 3'--1 from group (3 0 6'100000).
+  Merging pattern 3'--1 and 3'--0 from group (3 0 6'100000).
+
+8.7.4. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \tiny_npu_top..
+Finding unused cells or wires in module \matrix_feeder..
+Finding unused cells or wires in module \controller..
+Finding unused cells or wires in module \input_buffer..
+Finding unused cells or wires in module \systolic_array..
+Finding unused cells or wires in module \pe..
+Removed 9 unused cells and 9 unused wires.
+<suppressed ~11 debug messages>
+
+8.7.5. Executing FSM_OPT pass (simple optimizations of FSMs).
+Optimizing FSM `$fsm$\state$392' from module `\controller'.
+  Removing unused output signal $0\state[1:0] [0].
+  Removing unused output signal $0\state[1:0] [1].
+
+8.7.6. Executing FSM_RECODE pass (re-assigning FSM state encoding).
+Recoding FSM `$fsm$\state$392' from module `\controller' using `auto' encoding:
+  mapping auto encoding to `one-hot` for this FSM.
+  00 -> ---1
+  10 -> --1-
+  01 -> -1--
+  11 -> 1---
+
+8.7.7. Executing FSM_INFO pass (dumping all available information on FSM cells).
+
+FSM `$fsm$\state$392' from module `controller':
+-------------------------------------
+
+  Information on FSM $fsm$\state$392 (\state):
+
+  Number of input signals:    3
+  Number of output signals:   4
+  Number of state bits:       4
+
+  Input signals:
+    0: \rst
+    1: \start
+    2: $eq$rtl/controller.sv:33$143_Y
+
+  Output signals:
+    0: $eq$rtl/controller.sv:72$146_Y
+    1: $eq$rtl/controller.sv:74$147_Y
+    2: $eq$rtl/controller.sv:76$151_Y
+    3: $procmux$336_CMP
+
+  State encoding:
+    0:     4'---1  <RESET STATE>
+    1:     4'--1-
+    2:     4'-1--
+    3:     4'1---
+
+  Transition Table (state_in, ctrl_in, state_out, ctrl_out):
+      0:     0 3'-00   ->     0 4'0100
+      1:     0 3'--1   ->     0 4'0100
+      2:     0 3'-10   ->     2 4'0100
+      3:     1 3'--1   ->     0 4'0010
+      4:     1 3'0-0   ->     1 4'0010
+      5:     1 3'1-0   ->     3 4'0010
+      6:     2 3'--1   ->     0 4'0001
+      7:     2 3'--0   ->     1 4'0001
+      8:     3 3'---   ->     0 4'1000
+
+-------------------------------------
+
+8.7.8. Executing FSM_MAP pass (mapping FSMs to basic logic).
+Mapping FSM `$fsm$\state$392' from module `\controller'.
+
+8.8. Executing OPT pass (performing simple optimizations).
+
+8.8.1. Executing OPT_EXPR pass (perform const folding).
+Optimizing module tiny_npu_top.
+Optimizing module matrix_feeder.
+Optimizing module controller.
+<suppressed ~4 debug messages>
+Optimizing module input_buffer.
+Optimizing module systolic_array.
+Optimizing module pe.
+
+8.8.2. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\tiny_npu_top'.
+Computing hashes of 4 cells of `\tiny_npu_top'.
+Finding duplicate cells in `\tiny_npu_top'.
+Finding identical cells in module `\matrix_feeder'.
+Computing hashes of 45 cells of `\matrix_feeder'.
+Finding duplicate cells in `\matrix_feeder'.
+Finding identical cells in module `\controller'.
+Computing hashes of 25 cells of `\controller'.
+Finding duplicate cells in `\controller'.
+Finding identical cells in module `\input_buffer'.
+Computing hashes of 6 cells of `\input_buffer'.
+Finding duplicate cells in `\input_buffer'.
+Finding identical cells in module `\systolic_array'.
+Computing hashes of 16 cells of `\systolic_array'.
+Finding duplicate cells in `\systolic_array'.
+Finding identical cells in module `\pe'.
+Computing hashes of 12 cells of `\pe'.
+Finding duplicate cells in `\pe'.
+Removed a total of 0 cells.
+
+8.8.3. Executing OPT_MUXTREE pass (detect dead branches in mux trees).
+Running muxtree optimizer on module \tiny_npu_top..
+  Creating internal representation of mux trees.
+  No muxes found in this module.
+Running muxtree optimizer on module \matrix_feeder..
+  Creating internal representation of mux trees.
+  Evaluating internal representation of mux trees.
+  Analyzing evaluation results.
+Running muxtree optimizer on module \controller..
+  Creating internal representation of mux trees.
+  Evaluating internal representation of mux trees.
+  Analyzing evaluation results.
+Running muxtree optimizer on module \input_buffer..
+  Creating internal representation of mux trees.
+  Evaluating internal representation of mux trees.
+  Analyzing evaluation results.
+Running muxtree optimizer on module \systolic_array..
+  Creating internal representation of mux trees.
+  No muxes found in this module.
+Running muxtree optimizer on module \pe..
+  Creating internal representation of mux trees.
+  Evaluating internal representation of mux trees.
+  Analyzing evaluation results.
+Removed 0 multiplexer ports.
+<suppressed ~50 debug messages>
+
+8.8.4. Executing OPT_REDUCE pass (consolidate $*mux and $reduce_* inputs).
+  Optimizing cells in module \tiny_npu_top.
+  Optimizing cells in module \matrix_feeder.
+  Optimizing cells in module \controller.
+  Optimizing cells in module \input_buffer.
+  Optimizing cells in module \systolic_array.
+  Optimizing cells in module \pe.
+Performed a total of 0 changes.
+
+8.8.5. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\tiny_npu_top'.
+Computing hashes of 4 cells of `\tiny_npu_top'.
+Finding duplicate cells in `\tiny_npu_top'.
+Finding identical cells in module `\matrix_feeder'.
+Computing hashes of 45 cells of `\matrix_feeder'.
+Finding duplicate cells in `\matrix_feeder'.
+Finding identical cells in module `\controller'.
+Computing hashes of 25 cells of `\controller'.
+Finding duplicate cells in `\controller'.
+Finding identical cells in module `\input_buffer'.
+Computing hashes of 6 cells of `\input_buffer'.
+Finding duplicate cells in `\input_buffer'.
+Finding identical cells in module `\systolic_array'.
+Computing hashes of 16 cells of `\systolic_array'.
+Finding duplicate cells in `\systolic_array'.
+Finding identical cells in module `\pe'.
+Computing hashes of 12 cells of `\pe'.
+Finding duplicate cells in `\pe'.
+Removed a total of 0 cells.
+
+8.8.6. Executing OPT_DFF pass (perform DFF optimizations).
+Adding SRST signal on $procdff$385 ($dff) from module controller (D = $procmux$316_Y, Q = \cycle, rval = 4'0000).
+Adding EN signal on $auto$ff.cc:337:slice$426 ($sdff) from module controller (D = $procmux$316_Y, Q = \cycle).
+Adding SRST signal on $procdff$387 ($dff) from module input_buffer (D = $procmux$365_Y, Q = \a_reg, rval = 128'00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000).
+Adding EN signal on $auto$ff.cc:337:slice$432 ($sdff) from module input_buffer (D = \a_matrix, Q = \a_reg).
+Adding SRST signal on $procdff$388 ($dff) from module input_buffer (D = $procmux$360_Y, Q = \b_reg, rval = 128'00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000).
+Adding EN signal on $auto$ff.cc:337:slice$434 ($sdff) from module input_buffer (D = \b_matrix, Q = \b_reg).
+Adding SRST signal on $procdff$389 ($dff) from module pe (D = $procmux$380_Y, Q = \a_out, rval = 8'00000000).
+Adding EN signal on $auto$ff.cc:337:slice$436 ($sdff) from module pe (D = \a_in, Q = \a_out).
+Adding SRST signal on $procdff$390 ($dff) from module pe (D = $procmux$375_Y, Q = \b_out, rval = 8'00000000).
+Adding EN signal on $auto$ff.cc:337:slice$438 ($sdff) from module pe (D = \b_in, Q = \b_out).
+Adding SRST signal on $procdff$391 ($dff) from module pe (D = $procmux$370_Y, Q = \acc, rval = 0).
+Adding EN signal on $auto$ff.cc:337:slice$440 ($sdff) from module pe (D = $add$rtl/pe.sv:25$4_Y, Q = \acc).
+
+8.8.7. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \tiny_npu_top..
+Finding unused cells or wires in module \matrix_feeder..
+Finding unused cells or wires in module \controller..
+Finding unused cells or wires in module \input_buffer..
+Finding unused cells or wires in module \systolic_array..
+Finding unused cells or wires in module \pe..
+Removed 12 unused cells and 20 unused wires.
+<suppressed ~15 debug messages>
+
+8.8.8. Executing OPT_EXPR pass (perform const folding).
+Optimizing module tiny_npu_top.
+Optimizing module matrix_feeder.
+Optimizing module controller.
+<suppressed ~1 debug messages>
+Optimizing module input_buffer.
+Optimizing module systolic_array.
+Optimizing module pe.
+
+8.8.9. Rerunning OPT passes. (Maybe there is more to do..)
+
+8.8.10. Executing OPT_MUXTREE pass (detect dead branches in mux trees).
+Running muxtree optimizer on module \tiny_npu_top..
+  Creating internal representation of mux trees.
+  No muxes found in this module.
+Running muxtree optimizer on module \matrix_feeder..
+  Creating internal representation of mux trees.
+  Evaluating internal representation of mux trees.
+  Analyzing evaluation results.
+Running muxtree optimizer on module \controller..
+  Creating internal representation of mux trees.
+  Evaluating internal representation of mux trees.
+  Analyzing evaluation results.
+Running muxtree optimizer on module \input_buffer..
+  Creating internal representation of mux trees.
+  No muxes found in this module.
+Running muxtree optimizer on module \systolic_array..
+  Creating internal representation of mux trees.
+  No muxes found in this module.
+Running muxtree optimizer on module \pe..
+  Creating internal representation of mux trees.
+  No muxes found in this module.
+Removed 0 multiplexer ports.
+<suppressed ~33 debug messages>
+
+8.8.11. Executing OPT_REDUCE pass (consolidate $*mux and $reduce_* inputs).
+  Optimizing cells in module \tiny_npu_top.
+  Optimizing cells in module \matrix_feeder.
+  Optimizing cells in module \controller.
+  Optimizing cells in module \input_buffer.
+  Optimizing cells in module \systolic_array.
+  Optimizing cells in module \pe.
+Performed a total of 0 changes.
+
+8.8.12. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\tiny_npu_top'.
+Computing hashes of 4 cells of `\tiny_npu_top'.
+Finding duplicate cells in `\tiny_npu_top'.
+Finding identical cells in module `\matrix_feeder'.
+Computing hashes of 45 cells of `\matrix_feeder'.
+Finding duplicate cells in `\matrix_feeder'.
+Finding identical cells in module `\controller'.
+Computing hashes of 25 cells of `\controller'.
+Finding duplicate cells in `\controller'.
+Finding identical cells in module `\input_buffer'.
+Computing hashes of 2 cells of `\input_buffer'.
+Finding duplicate cells in `\input_buffer'.
+Finding identical cells in module `\systolic_array'.
+Computing hashes of 16 cells of `\systolic_array'.
+Finding duplicate cells in `\systolic_array'.
+Finding identical cells in module `\pe'.
+Computing hashes of 6 cells of `\pe'.
+Finding duplicate cells in `\pe'.
+Removed a total of 0 cells.
+
+8.8.13. Executing OPT_DFF pass (perform DFF optimizations).
+
+8.8.14. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \tiny_npu_top..
+Finding unused cells or wires in module \matrix_feeder..
+Finding unused cells or wires in module \controller..
+Finding unused cells or wires in module \input_buffer..
+Finding unused cells or wires in module \systolic_array..
+Finding unused cells or wires in module \pe..
+
+8.8.15. Executing OPT_EXPR pass (perform const folding).
+Optimizing module tiny_npu_top.
+Optimizing module matrix_feeder.
+Optimizing module controller.
+Optimizing module input_buffer.
+Optimizing module systolic_array.
+Optimizing module pe.
+
+8.8.16. Finished fast OPT passes. (There is nothing left to do.)
+
+8.9. Executing WREDUCE pass (reducing word size of cells).
+Removed top 24 bits (of 32) from port B of cell matrix_feeder.$shiftx$rtl/matrix_feeder.sv:24$168 ($shiftx).
+Removed top 28 bits (of 32) from port A of cell matrix_feeder.$add$rtl/matrix_feeder.sv:24$173 ($add).
+Removed top 3 bits (of 32) from port Y of cell matrix_feeder.$add$rtl/matrix_feeder.sv:24$173 ($add).
+Removed top 3 bits (of 32) from port B of cell matrix_feeder.$add$rtl/matrix_feeder.sv:24$173 ($add).
+Removed top 27 bits (of 32) from port A of cell matrix_feeder.$add$rtl/matrix_feeder.sv:24$181 ($add).
+Removed top 3 bits (of 32) from port Y of cell matrix_feeder.$add$rtl/matrix_feeder.sv:24$181 ($add).
+Removed top 3 bits (of 32) from port B of cell matrix_feeder.$add$rtl/matrix_feeder.sv:24$181 ($add).
+Removed top 27 bits (of 32) from port A of cell matrix_feeder.$add$rtl/matrix_feeder.sv:24$189 ($add).
+Removed top 3 bits (of 32) from port Y of cell matrix_feeder.$add$rtl/matrix_feeder.sv:24$189 ($add).
+Removed top 3 bits (of 32) from port B of cell matrix_feeder.$add$rtl/matrix_feeder.sv:24$189 ($add).
+Removed top 27 bits (of 32) from port A of cell matrix_feeder.$ge$rtl/matrix_feeder.sv:30$194 ($ge).
+Removed top 31 bits (of 32) from port B of cell matrix_feeder.$ge$rtl/matrix_feeder.sv:30$194 ($ge).
+Converting cell matrix_feeder.$ge$rtl/matrix_feeder.sv:30$194 ($ge) from signed to unsigned.
+Removed top 1 bits (of 5) from port A of cell matrix_feeder.$ge$rtl/matrix_feeder.sv:30$194 ($ge).
+Removed top 27 bits (of 32) from port A of cell matrix_feeder.$lt$rtl/matrix_feeder.sv:30$195 ($lt).
+Removed top 28 bits (of 32) from port B of cell matrix_feeder.$lt$rtl/matrix_feeder.sv:30$195 ($lt).
+Converting cell matrix_feeder.$lt$rtl/matrix_feeder.sv:30$195 ($lt) from signed to unsigned.
+Removed top 1 bits (of 5) from port A of cell matrix_feeder.$lt$rtl/matrix_feeder.sv:30$195 ($lt).
+Removed top 1 bits (of 4) from port B of cell matrix_feeder.$lt$rtl/matrix_feeder.sv:30$195 ($lt).
+Removed top 22 bits (of 32) from port B of cell matrix_feeder.$shiftx$rtl/matrix_feeder.sv:32$201 ($shiftx).
+Removed top 28 bits (of 32) from port A of cell matrix_feeder.$sub$rtl/matrix_feeder.sv:28$202 ($sub).
+Removed top 31 bits (of 32) from port B of cell matrix_feeder.$sub$rtl/matrix_feeder.sv:28$202 ($sub).
+Removed top 27 bits (of 32) from port Y of cell matrix_feeder.$sub$rtl/matrix_feeder.sv:28$202 ($sub).
+Removed top 27 bits (of 32) from port A of cell matrix_feeder.$ge$rtl/matrix_feeder.sv:30$203 ($ge).
+Removed top 31 bits (of 32) from port B of cell matrix_feeder.$ge$rtl/matrix_feeder.sv:30$203 ($ge).
+Removed top 27 bits (of 32) from port A of cell matrix_feeder.$lt$rtl/matrix_feeder.sv:30$204 ($lt).
+Removed top 28 bits (of 32) from port B of cell matrix_feeder.$lt$rtl/matrix_feeder.sv:30$204 ($lt).
+Converting cell matrix_feeder.$add$rtl/matrix_feeder.sv:32$207 ($add) from unsigned to signed.
+Removed top 25 bits (of 32) from port A of cell matrix_feeder.$add$rtl/matrix_feeder.sv:32$207 ($add).
+Removed top 30 bits (of 32) from port B of cell matrix_feeder.$add$rtl/matrix_feeder.sv:32$207 ($add).
+Removed top 24 bits (of 32) from port Y of cell matrix_feeder.$add$rtl/matrix_feeder.sv:32$207 ($add).
+Removed top 21 bits (of 32) from port B of cell matrix_feeder.$shiftx$rtl/matrix_feeder.sv:32$210 ($shiftx).
+Removed top 28 bits (of 32) from port A of cell matrix_feeder.$sub$rtl/matrix_feeder.sv:28$211 ($sub).
+Removed top 30 bits (of 32) from port B of cell matrix_feeder.$sub$rtl/matrix_feeder.sv:28$211 ($sub).
+Removed top 27 bits (of 32) from port Y of cell matrix_feeder.$sub$rtl/matrix_feeder.sv:28$211 ($sub).
+Removed top 27 bits (of 32) from port A of cell matrix_feeder.$ge$rtl/matrix_feeder.sv:30$212 ($ge).
+Removed top 31 bits (of 32) from port B of cell matrix_feeder.$ge$rtl/matrix_feeder.sv:30$212 ($ge).
+Removed top 27 bits (of 32) from port A of cell matrix_feeder.$lt$rtl/matrix_feeder.sv:30$213 ($lt).
+Removed top 28 bits (of 32) from port B of cell matrix_feeder.$lt$rtl/matrix_feeder.sv:30$213 ($lt).
+Converting cell matrix_feeder.$add$rtl/matrix_feeder.sv:32$216 ($add) from unsigned to signed.
+Removed top 25 bits (of 32) from port A of cell matrix_feeder.$add$rtl/matrix_feeder.sv:32$216 ($add).
+Removed top 29 bits (of 32) from port B of cell matrix_feeder.$add$rtl/matrix_feeder.sv:32$216 ($add).
+Removed top 24 bits (of 32) from port Y of cell matrix_feeder.$add$rtl/matrix_feeder.sv:32$216 ($add).
+Removed top 21 bits (of 32) from port B of cell matrix_feeder.$shiftx$rtl/matrix_feeder.sv:32$219 ($shiftx).
+Removed top 28 bits (of 32) from port A of cell matrix_feeder.$sub$rtl/matrix_feeder.sv:28$220 ($sub).
+Removed top 30 bits (of 32) from port B of cell matrix_feeder.$sub$rtl/matrix_feeder.sv:28$220 ($sub).
+Removed top 27 bits (of 32) from port Y of cell matrix_feeder.$sub$rtl/matrix_feeder.sv:28$220 ($sub).
+Removed top 27 bits (of 32) from port A of cell matrix_feeder.$ge$rtl/matrix_feeder.sv:30$221 ($ge).
+Removed top 31 bits (of 32) from port B of cell matrix_feeder.$ge$rtl/matrix_feeder.sv:30$221 ($ge).
+Removed top 27 bits (of 32) from port A of cell matrix_feeder.$lt$rtl/matrix_feeder.sv:30$222 ($lt).
+Removed top 28 bits (of 32) from port B of cell matrix_feeder.$lt$rtl/matrix_feeder.sv:30$222 ($lt).
+Converting cell matrix_feeder.$add$rtl/matrix_feeder.sv:32$225 ($add) from unsigned to signed.
+Removed top 25 bits (of 32) from port A of cell matrix_feeder.$add$rtl/matrix_feeder.sv:32$225 ($add).
+Removed top 29 bits (of 32) from port B of cell matrix_feeder.$add$rtl/matrix_feeder.sv:32$225 ($add).
+Removed top 24 bits (of 32) from port Y of cell matrix_feeder.$add$rtl/matrix_feeder.sv:32$225 ($add).
+Removed top 21 bits (of 32) from port B of cell matrix_feeder.$shiftx$rtl/matrix_feeder.sv:32$228 ($shiftx).
+Removed top 24 bits (of 29) from port B of cell matrix_feeder.$add$rtl/matrix_feeder.sv:24$173 ($add).
+Removed top 23 bits (of 29) from port Y of cell matrix_feeder.$add$rtl/matrix_feeder.sv:24$173 ($add).
+Removed top 24 bits (of 29) from port B of cell matrix_feeder.$add$rtl/matrix_feeder.sv:24$181 ($add).
+Removed top 23 bits (of 29) from port Y of cell matrix_feeder.$add$rtl/matrix_feeder.sv:24$181 ($add).
+Removed top 24 bits (of 29) from port B of cell matrix_feeder.$add$rtl/matrix_feeder.sv:24$189 ($add).
+Removed top 23 bits (of 29) from port Y of cell matrix_feeder.$add$rtl/matrix_feeder.sv:24$189 ($add).
+Removed top 3 bits (of 32) from wire matrix_feeder.$add$rtl/matrix_feeder.sv:32$225_Y.
+Removed top 3 bits (of 32) from wire matrix_feeder.$add$rtl/matrix_feeder.sv:24$181_Y.
+Removed top 3 bits (of 32) from wire matrix_feeder.$add$rtl/matrix_feeder.sv:24$173_Y.
+Removed top 3 bits (of 32) from wire matrix_feeder.$add$rtl/matrix_feeder.sv:24$189_Y.
+Removed top 3 bits (of 32) from wire matrix_feeder.$add$rtl/matrix_feeder.sv:32$216_Y.
+Removed top 3 bits (of 32) from wire matrix_feeder.$add$rtl/matrix_feeder.sv:32$207_Y.
+
+8.10. Executing PEEPOPT pass (run peephole optimizers).
+shiftpow2 pattern in matrix_feeder: shift=$shiftx$rtl/matrix_feeder.sv:32$201, index=\cycle, stride=32, width=8, ways=16
+shiftpow2 pattern in matrix_feeder: shift=$shiftx$rtl/matrix_feeder.sv:24$168, index=\cycle, stride=8, width=8, ways=16
+
+8.11. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \tiny_npu_top..
+Finding unused cells or wires in module \matrix_feeder..
+Finding unused cells or wires in module \controller..
+Finding unused cells or wires in module \input_buffer..
+Finding unused cells or wires in module \systolic_array..
+Finding unused cells or wires in module \pe..
+Removed 0 unused cells and 9 unused wires.
+<suppressed ~1 debug messages>
+
+8.12. Executing ALUMACC pass (create $alu and $macc cells).
+Extracting $alu and $macc cells in module tiny_npu_top:
+  created 0 $alu and 0 $macc cells.
+Extracting $alu and $macc cells in module matrix_feeder:
+  creating $macc model for $sub$rtl/matrix_feeder.sv:28$202 ($sub).
+  creating $macc model for $sub$rtl/matrix_feeder.sv:28$211 ($sub).
+  creating $macc model for $add$rtl/matrix_feeder.sv:24$189 ($add).
+  creating $macc model for $add$rtl/matrix_feeder.sv:32$216 ($add).
+  creating $macc model for $add$rtl/matrix_feeder.sv:24$181 ($add).
+  creating $macc model for $sub$rtl/matrix_feeder.sv:28$220 ($sub).
+  creating $macc model for $add$rtl/matrix_feeder.sv:24$173 ($add).
+  creating $macc model for $add$rtl/matrix_feeder.sv:32$207 ($add).
+  creating $macc model for $add$rtl/matrix_feeder.sv:32$225 ($add).
+  creating $alu model for $macc $add$rtl/matrix_feeder.sv:32$225.
+  creating $alu model for $macc $add$rtl/matrix_feeder.sv:32$207.
+  creating $alu model for $macc $add$rtl/matrix_feeder.sv:24$173.
+  creating $alu model for $macc $sub$rtl/matrix_feeder.sv:28$220.
+  creating $alu model for $macc $add$rtl/matrix_feeder.sv:24$181.
+  creating $alu model for $macc $add$rtl/matrix_feeder.sv:32$216.
+  creating $alu model for $macc $add$rtl/matrix_feeder.sv:24$189.
+  creating $alu model for $macc $sub$rtl/matrix_feeder.sv:28$211.
+  creating $alu model for $macc $sub$rtl/matrix_feeder.sv:28$202.
+  creating $alu model for $lt$rtl/matrix_feeder.sv:30$204 ($lt): new $alu
+  creating $alu model for $ge$rtl/matrix_feeder.sv:30$203 ($ge): new $alu
+  creating $alu model for $ge$rtl/matrix_feeder.sv:30$212 ($ge): new $alu
+  creating $alu model for $lt$rtl/matrix_feeder.sv:30$195 ($lt): new $alu
+  creating $alu model for $ge$rtl/matrix_feeder.sv:30$194 ($ge): new $alu
+  creating $alu model for $lt$rtl/matrix_feeder.sv:30$222 ($lt): new $alu
+  creating $alu model for $ge$rtl/matrix_feeder.sv:30$221 ($ge): new $alu
+  creating $alu model for $lt$rtl/matrix_feeder.sv:30$213 ($lt): new $alu
+  creating $alu cell for $lt$rtl/matrix_feeder.sv:30$213: $auto$alumacc.cc:578:replace_alu$458
+  creating $alu cell for $ge$rtl/matrix_feeder.sv:30$221: $auto$alumacc.cc:578:replace_alu$465
+  creating $alu cell for $lt$rtl/matrix_feeder.sv:30$222: $auto$alumacc.cc:578:replace_alu$480
+  creating $alu cell for $ge$rtl/matrix_feeder.sv:30$194: $auto$alumacc.cc:578:replace_alu$487
+  creating $alu cell for $lt$rtl/matrix_feeder.sv:30$195: $auto$alumacc.cc:578:replace_alu$500
+  creating $alu cell for $ge$rtl/matrix_feeder.sv:30$212: $auto$alumacc.cc:578:replace_alu$505
+  creating $alu cell for $ge$rtl/matrix_feeder.sv:30$203: $auto$alumacc.cc:578:replace_alu$520
+  creating $alu cell for $lt$rtl/matrix_feeder.sv:30$204: $auto$alumacc.cc:578:replace_alu$535
+  creating $alu cell for $sub$rtl/matrix_feeder.sv:28$202: $auto$alumacc.cc:578:replace_alu$542
+  creating $alu cell for $sub$rtl/matrix_feeder.sv:28$211: $auto$alumacc.cc:578:replace_alu$545
+  creating $alu cell for $add$rtl/matrix_feeder.sv:24$189: $auto$alumacc.cc:578:replace_alu$548
+  creating $alu cell for $add$rtl/matrix_feeder.sv:32$216: $auto$alumacc.cc:578:replace_alu$551
+  creating $alu cell for $add$rtl/matrix_feeder.sv:24$181: $auto$alumacc.cc:578:replace_alu$554
+  creating $alu cell for $sub$rtl/matrix_feeder.sv:28$220: $auto$alumacc.cc:578:replace_alu$557
+  creating $alu cell for $add$rtl/matrix_feeder.sv:24$173: $auto$alumacc.cc:578:replace_alu$560
+  creating $alu cell for $add$rtl/matrix_feeder.sv:32$207: $auto$alumacc.cc:578:replace_alu$563
+  creating $alu cell for $add$rtl/matrix_feeder.sv:32$225: $auto$alumacc.cc:578:replace_alu$566
+  created 17 $alu and 0 $macc cells.
+Extracting $alu and $macc cells in module controller:
+  creating $macc model for $add$rtl/controller.sv:75$150 ($add).
+  creating $alu model for $macc $add$rtl/controller.sv:75$150.
+  creating $alu model for $lt$rtl/controller.sv:74$148 ($lt): new $alu
+  creating $alu model for $eq$rtl/controller.sv:33$143 ($eq): merged with $lt$rtl/controller.sv:74$148.
+  creating $alu cell for $lt$rtl/controller.sv:74$148, $eq$rtl/controller.sv:33$143: $auto$alumacc.cc:578:replace_alu$570
+  creating $alu cell for $add$rtl/controller.sv:75$150: $auto$alumacc.cc:578:replace_alu$577
+  created 2 $alu and 0 $macc cells.
+Extracting $alu and $macc cells in module input_buffer:
+  created 0 $alu and 0 $macc cells.
+Extracting $alu and $macc cells in module systolic_array:
+  created 0 $alu and 0 $macc cells.
+Extracting $alu and $macc cells in module pe:
+  creating $macc model for $add$rtl/pe.sv:25$4 ($add).
+  creating $macc model for $mul$rtl/pe.sv:15$1 ($mul).
+  creating $alu model for $macc $add$rtl/pe.sv:25$4.
+  creating $macc cell for $mul$rtl/pe.sv:15$1: $auto$alumacc.cc:427:replace_macc$580
+  creating $alu cell for $add$rtl/pe.sv:25$4: $auto$alumacc.cc:578:replace_alu$581
+  created 1 $alu and 1 $macc cells.
+
+8.13. Executing SHARE pass (SAT-based resource sharing).
+
+8.14. Executing OPT pass (performing simple optimizations).
+
+8.14.1. Executing OPT_EXPR pass (perform const folding).
+Optimizing module tiny_npu_top.
+Optimizing module matrix_feeder.
+<suppressed ~16 debug messages>
+Optimizing module controller.
+Optimizing module input_buffer.
+Optimizing module systolic_array.
+Optimizing module pe.
+
+8.14.2. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\tiny_npu_top'.
+Computing hashes of 4 cells of `\tiny_npu_top'.
+Finding duplicate cells in `\tiny_npu_top'.
+Finding identical cells in module `\matrix_feeder'.
+Computing hashes of 69 cells of `\matrix_feeder'.
+Finding duplicate cells in `\matrix_feeder'.
+Finding identical cells in module `\controller'.
+Computing hashes of 26 cells of `\controller'.
+Finding duplicate cells in `\controller'.
+Finding identical cells in module `\input_buffer'.
+Computing hashes of 2 cells of `\input_buffer'.
+Finding duplicate cells in `\input_buffer'.
+Finding identical cells in module `\systolic_array'.
+Computing hashes of 16 cells of `\systolic_array'.
+Finding duplicate cells in `\systolic_array'.
+Finding identical cells in module `\pe'.
+Computing hashes of 6 cells of `\pe'.
+Finding duplicate cells in `\pe'.
+Removed a total of 0 cells.
+
+8.14.3. Executing OPT_MUXTREE pass (detect dead branches in mux trees).
+Running muxtree optimizer on module \tiny_npu_top..
+  Creating internal representation of mux trees.
+  No muxes found in this module.
+Running muxtree optimizer on module \matrix_feeder..
+  Creating internal representation of mux trees.
+  Evaluating internal representation of mux trees.
+  Analyzing evaluation results.
+Running muxtree optimizer on module \controller..
+  Creating internal representation of mux trees.
+  Evaluating internal representation of mux trees.
+  Analyzing evaluation results.
+Running muxtree optimizer on module \input_buffer..
+  Creating internal representation of mux trees.
+  No muxes found in this module.
+Running muxtree optimizer on module \systolic_array..
+  Creating internal representation of mux trees.
+  No muxes found in this module.
+Running muxtree optimizer on module \pe..
+  Creating internal representation of mux trees.
+  No muxes found in this module.
+Removed 0 multiplexer ports.
+<suppressed ~33 debug messages>
+
+8.14.4. Executing OPT_REDUCE pass (consolidate $*mux and $reduce_* inputs).
+  Optimizing cells in module \tiny_npu_top.
+  Optimizing cells in module \matrix_feeder.
+  Optimizing cells in module \controller.
+  Optimizing cells in module \input_buffer.
+  Optimizing cells in module \systolic_array.
+  Optimizing cells in module \pe.
+Performed a total of 0 changes.
+
+8.14.5. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\tiny_npu_top'.
+Computing hashes of 4 cells of `\tiny_npu_top'.
+Finding duplicate cells in `\tiny_npu_top'.
+Finding identical cells in module `\matrix_feeder'.
+Computing hashes of 69 cells of `\matrix_feeder'.
+Finding duplicate cells in `\matrix_feeder'.
+Finding identical cells in module `\controller'.
+Computing hashes of 26 cells of `\controller'.
+Finding duplicate cells in `\controller'.
+Finding identical cells in module `\input_buffer'.
+Computing hashes of 2 cells of `\input_buffer'.
+Finding duplicate cells in `\input_buffer'.
+Finding identical cells in module `\systolic_array'.
+Computing hashes of 16 cells of `\systolic_array'.
+Finding duplicate cells in `\systolic_array'.
+Finding identical cells in module `\pe'.
+Computing hashes of 6 cells of `\pe'.
+Finding duplicate cells in `\pe'.
+Removed a total of 0 cells.
+
+8.14.6. Executing OPT_DFF pass (perform DFF optimizations).
+
+8.14.7. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \tiny_npu_top..
+Finding unused cells or wires in module \matrix_feeder..
+Finding unused cells or wires in module \controller..
+Finding unused cells or wires in module \input_buffer..
+Finding unused cells or wires in module \systolic_array..
+Finding unused cells or wires in module \pe..
+Removed 4 unused cells and 36 unused wires.
+<suppressed ~10 debug messages>
+
+8.14.8. Executing OPT_EXPR pass (perform const folding).
+Optimizing module tiny_npu_top.
+Optimizing module matrix_feeder.
+Optimizing module controller.
+Optimizing module input_buffer.
+Optimizing module systolic_array.
+Optimizing module pe.
+
+8.14.9. Rerunning OPT passes. (Maybe there is more to do..)
+
+8.14.10. Executing OPT_MUXTREE pass (detect dead branches in mux trees).
+Running muxtree optimizer on module \tiny_npu_top..
+  Creating internal representation of mux trees.
+  No muxes found in this module.
+Running muxtree optimizer on module \matrix_feeder..
+  Creating internal representation of mux trees.
+  Evaluating internal representation of mux trees.
+  Analyzing evaluation results.
+Running muxtree optimizer on module \controller..
+  Creating internal representation of mux trees.
+  Evaluating internal representation of mux trees.
+  Analyzing evaluation results.
+Running muxtree optimizer on module \input_buffer..
+  Creating internal representation of mux trees.
+  No muxes found in this module.
+Running muxtree optimizer on module \systolic_array..
+  Creating internal representation of mux trees.
+  No muxes found in this module.
+Running muxtree optimizer on module \pe..
+  Creating internal representation of mux trees.
+  No muxes found in this module.
+Removed 0 multiplexer ports.
+<suppressed ~33 debug messages>
+
+8.14.11. Executing OPT_REDUCE pass (consolidate $*mux and $reduce_* inputs).
+  Optimizing cells in module \tiny_npu_top.
+  Optimizing cells in module \matrix_feeder.
+  Optimizing cells in module \controller.
+  Optimizing cells in module \input_buffer.
+  Optimizing cells in module \systolic_array.
+  Optimizing cells in module \pe.
+Performed a total of 0 changes.
+
+8.14.12. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\tiny_npu_top'.
+Computing hashes of 4 cells of `\tiny_npu_top'.
+Finding duplicate cells in `\tiny_npu_top'.
+Finding identical cells in module `\matrix_feeder'.
+Computing hashes of 61 cells of `\matrix_feeder'.
+Finding duplicate cells in `\matrix_feeder'.
+Finding identical cells in module `\controller'.
+Computing hashes of 26 cells of `\controller'.
+Finding duplicate cells in `\controller'.
+Finding identical cells in module `\input_buffer'.
+Computing hashes of 2 cells of `\input_buffer'.
+Finding duplicate cells in `\input_buffer'.
+Finding identical cells in module `\systolic_array'.
+Computing hashes of 16 cells of `\systolic_array'.
+Finding duplicate cells in `\systolic_array'.
+Finding identical cells in module `\pe'.
+Computing hashes of 6 cells of `\pe'.
+Finding duplicate cells in `\pe'.
+Removed a total of 0 cells.
+
+8.14.13. Executing OPT_DFF pass (perform DFF optimizations).
+
+8.14.14. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \tiny_npu_top..
+Finding unused cells or wires in module \matrix_feeder..
+Finding unused cells or wires in module \controller..
+Finding unused cells or wires in module \input_buffer..
+Finding unused cells or wires in module \systolic_array..
+Finding unused cells or wires in module \pe..
+
+8.14.15. Executing OPT_EXPR pass (perform const folding).
+Optimizing module tiny_npu_top.
+Optimizing module matrix_feeder.
+Optimizing module controller.
+Optimizing module input_buffer.
+Optimizing module systolic_array.
+Optimizing module pe.
+
+8.14.16. Finished fast OPT passes. (There is nothing left to do.)
+
+8.15. Executing MEMORY pass.
+
+8.15.1. Executing OPT_MEM pass (optimize memories).
+Performed a total of 0 transformations.
+
+8.15.2. Executing OPT_MEM_PRIORITY pass (removing unnecessary memory write priority relations).
+Performed a total of 0 transformations.
+
+8.15.3. Executing OPT_MEM_FEEDBACK pass (finding memory read-to-write feedback paths).
+
+8.15.4. Executing MEMORY_BMUX2ROM pass (converting muxes to ROMs).
+
+8.15.5. Executing MEMORY_DFF pass (merging $dff cells to $memrd).
+
+8.15.6. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \tiny_npu_top..
+Finding unused cells or wires in module \matrix_feeder..
+Finding unused cells or wires in module \controller..
+Finding unused cells or wires in module \input_buffer..
+Finding unused cells or wires in module \systolic_array..
+Finding unused cells or wires in module \pe..
+
+8.15.7. Executing MEMORY_SHARE pass (consolidating $memrd/$memwr cells).
+
+8.15.8. Executing OPT_MEM_WIDEN pass (optimize memories where all ports are wide).
+Performed a total of 0 transformations.
+
+8.15.9. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \tiny_npu_top..
+Finding unused cells or wires in module \matrix_feeder..
+Finding unused cells or wires in module \controller..
+Finding unused cells or wires in module \input_buffer..
+Finding unused cells or wires in module \systolic_array..
+Finding unused cells or wires in module \pe..
+
+8.15.10. Executing MEMORY_COLLECT pass (generating $mem cells).
+
+8.16. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \tiny_npu_top..
+Finding unused cells or wires in module \matrix_feeder..
+Finding unused cells or wires in module \controller..
+Finding unused cells or wires in module \input_buffer..
+Finding unused cells or wires in module \systolic_array..
+Finding unused cells or wires in module \pe..
+
+8.17. Executing OPT pass (performing simple optimizations).
+
+8.17.1. Executing OPT_EXPR pass (perform const folding).
+Optimizing module tiny_npu_top.
+Optimizing module matrix_feeder.
+<suppressed ~30 debug messages>
+Optimizing module controller.
+<suppressed ~4 debug messages>
+Optimizing module input_buffer.
+Optimizing module systolic_array.
+Optimizing module pe.
+
+8.17.2. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\tiny_npu_top'.
+Computing hashes of 4 cells of `\tiny_npu_top'.
+Finding duplicate cells in `\tiny_npu_top'.
+Finding identical cells in module `\matrix_feeder'.
+Computing hashes of 70 cells of `\matrix_feeder'.
+Finding duplicate cells in `\matrix_feeder'.
+Computing hashes of 68 cells of `\matrix_feeder'.
+Finding duplicate cells in `\matrix_feeder'.
+<suppressed ~6 debug messages>
+Finding identical cells in module `\controller'.
+Computing hashes of 22 cells of `\controller'.
+Finding duplicate cells in `\controller'.
+Finding identical cells in module `\input_buffer'.
+Computing hashes of 2 cells of `\input_buffer'.
+Finding duplicate cells in `\input_buffer'.
+Finding identical cells in module `\systolic_array'.
+Computing hashes of 16 cells of `\systolic_array'.
+Finding duplicate cells in `\systolic_array'.
+Finding identical cells in module `\pe'.
+Computing hashes of 6 cells of `\pe'.
+Finding duplicate cells in `\pe'.
+Removed a total of 2 cells.
+
+8.17.3. Executing OPT_DFF pass (perform DFF optimizations).
+
+8.17.4. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \tiny_npu_top..
+Finding unused cells or wires in module \matrix_feeder..
+Finding unused cells or wires in module \controller..
+Finding unused cells or wires in module \input_buffer..
+Finding unused cells or wires in module \systolic_array..
+Finding unused cells or wires in module \pe..
+Removed 7 unused cells and 19 unused wires.
+<suppressed ~12 debug messages>
+
+8.17.5. Finished fast OPT passes.
+
+8.18. Executing MEMORY_MAP pass (converting memories to logic and flip-flops).
+
+8.19. Executing OPT pass (performing simple optimizations).
+
+8.19.1. Executing OPT_EXPR pass (perform const folding).
+Optimizing module tiny_npu_top.
+Optimizing module matrix_feeder.
+Optimizing module controller.
+Optimizing module input_buffer.
+Optimizing module systolic_array.
+Optimizing module pe.
+
+8.19.2. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\tiny_npu_top'.
+Computing hashes of 4 cells of `\tiny_npu_top'.
+Finding duplicate cells in `\tiny_npu_top'.
+Finding identical cells in module `\matrix_feeder'.
+Computing hashes of 58 cells of `\matrix_feeder'.
+Finding duplicate cells in `\matrix_feeder'.
+Finding identical cells in module `\controller'.
+Computing hashes of 22 cells of `\controller'.
+Finding duplicate cells in `\controller'.
+Finding identical cells in module `\input_buffer'.
+Computing hashes of 2 cells of `\input_buffer'.
+Finding duplicate cells in `\input_buffer'.
+Finding identical cells in module `\systolic_array'.
+Computing hashes of 16 cells of `\systolic_array'.
+Finding duplicate cells in `\systolic_array'.
+Finding identical cells in module `\pe'.
+Computing hashes of 6 cells of `\pe'.
+Finding duplicate cells in `\pe'.
+Removed a total of 0 cells.
+
+8.19.3. Executing OPT_MUXTREE pass (detect dead branches in mux trees).
+Running muxtree optimizer on module \tiny_npu_top..
+  Creating internal representation of mux trees.
+  No muxes found in this module.
+Running muxtree optimizer on module \matrix_feeder..
+  Creating internal representation of mux trees.
+  Evaluating internal representation of mux trees.
+  Analyzing evaluation results.
+Running muxtree optimizer on module \controller..
+  Creating internal representation of mux trees.
+  Evaluating internal representation of mux trees.
+  Analyzing evaluation results.
+Running muxtree optimizer on module \input_buffer..
+  Creating internal representation of mux trees.
+  No muxes found in this module.
+Running muxtree optimizer on module \systolic_array..
+  Creating internal representation of mux trees.
+  No muxes found in this module.
+Running muxtree optimizer on module \pe..
+  Creating internal representation of mux trees.
+  No muxes found in this module.
+Removed 0 multiplexer ports.
+<suppressed ~26 debug messages>
+
+8.19.4. Executing OPT_REDUCE pass (consolidate $*mux and $reduce_* inputs).
+  Optimizing cells in module \tiny_npu_top.
+  Optimizing cells in module \matrix_feeder.
+  Optimizing cells in module \controller.
+  Optimizing cells in module \input_buffer.
+  Optimizing cells in module \systolic_array.
+  Optimizing cells in module \pe.
+Performed a total of 0 changes.
+
+8.19.5. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\tiny_npu_top'.
+Computing hashes of 4 cells of `\tiny_npu_top'.
+Finding duplicate cells in `\tiny_npu_top'.
+Finding identical cells in module `\matrix_feeder'.
+Computing hashes of 58 cells of `\matrix_feeder'.
+Finding duplicate cells in `\matrix_feeder'.
+Finding identical cells in module `\controller'.
+Computing hashes of 22 cells of `\controller'.
+Finding duplicate cells in `\controller'.
+Finding identical cells in module `\input_buffer'.
+Computing hashes of 2 cells of `\input_buffer'.
+Finding duplicate cells in `\input_buffer'.
+Finding identical cells in module `\systolic_array'.
+Computing hashes of 16 cells of `\systolic_array'.
+Finding duplicate cells in `\systolic_array'.
+Finding identical cells in module `\pe'.
+Computing hashes of 6 cells of `\pe'.
+Finding duplicate cells in `\pe'.
+Removed a total of 0 cells.
+
+8.19.6. Executing OPT_SHARE pass.
+
+8.19.7. Executing OPT_DFF pass (perform DFF optimizations).
+
+8.19.8. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \tiny_npu_top..
+Finding unused cells or wires in module \matrix_feeder..
+Finding unused cells or wires in module \controller..
+Finding unused cells or wires in module \input_buffer..
+Finding unused cells or wires in module \systolic_array..
+Finding unused cells or wires in module \pe..
+
+8.19.9. Executing OPT_EXPR pass (perform const folding).
+Optimizing module tiny_npu_top.
+Optimizing module matrix_feeder.
+Optimizing module controller.
+Optimizing module input_buffer.
+Optimizing module systolic_array.
+Optimizing module pe.
+
+8.19.10. Finished fast OPT passes. (There is nothing left to do.)
+
+8.20. Executing TECHMAP pass (map to technology primitives).
+
+8.20.1. Executing Verilog-2005 frontend: <toolchain>\bin\../share/yosys/techmap.v
+Parsing Verilog input from `<toolchain>\bin\../share/yosys/techmap.v' to AST representation.
+Generating RTLIL representation for module `\_90_simplemap_bool_ops'.
+Generating RTLIL representation for module `\_90_simplemap_reduce_ops'.
+Generating RTLIL representation for module `\_90_simplemap_logic_ops'.
+Generating RTLIL representation for module `\_90_simplemap_compare_ops'.
+Generating RTLIL representation for module `\_90_simplemap_various'.
+Generating RTLIL representation for module `\_90_simplemap_registers'.
+Generating RTLIL representation for module `\_90_shift_ops_shr_shl_sshl_sshr'.
+Generating RTLIL representation for module `\_90_shift_shiftx'.
+Generating RTLIL representation for module `\_90_fa'.
+Generating RTLIL representation for module `\_90_lcu_brent_kung'.
+Generating RTLIL representation for module `\_90_alu'.
+Generating RTLIL representation for module `\_90_macc'.
+Generating RTLIL representation for module `\_90_alumacc'.
+Generating RTLIL representation for module `$__div_mod_u'.
+Generating RTLIL representation for module `$__div_mod_trunc'.
+Generating RTLIL representation for module `\_90_div'.
+Generating RTLIL representation for module `\_90_mod'.
+Generating RTLIL representation for module `$__div_mod_floor'.
+Generating RTLIL representation for module `\_90_divfloor'.
+Generating RTLIL representation for module `\_90_modfloor'.
+Generating RTLIL representation for module `\_90_pow'.
+Generating RTLIL representation for module `\_90_demux'.
+Generating RTLIL representation for module `\_90_lut'.
+Generating RTLIL representation for module `$connect'.
+Generating RTLIL representation for module `$input_port'.
+Successfully finished Verilog frontend.
+
+8.20.2. Continuing TECHMAP pass.
+Using template $paramod$fbc7873bff55778c0b3173955b7e4bce1d9d6834\_90_alu for cells of type $alu.
+Using extmapper maccmap for cells of type $macc_v2.
+  add \a_in * \b_in (8x8 bits, signed)
+Using extmapper simplemap for cells of type $sdffe.
+Using extmapper simplemap for cells of type $logic_or.
+Using template $paramod\_90_fa\WIDTH=32'00000000000000000000000000010000 for cells of type $fa.
+Using template $paramod$6df0329addda9228fcc2546de2aaf14ad26c98e1\_90_alu for cells of type $alu.
+Using extmapper simplemap for cells of type $and.
+Using extmapper simplemap for cells of type $not.
+Using extmapper simplemap for cells of type $mux.
+Using extmapper simplemap for cells of type $pos.
+Using template $paramod\_90_fa\WIDTH=32'00000000000000000000000000100000 for cells of type $fa.
+Using template $paramod\_90_lcu_brent_kung\WIDTH=32'00000000000000000000000000100000 for cells of type $lcu.
+Using extmapper simplemap for cells of type $xor.
+Using extmapper simplemap for cells of type $or.
+Using template $paramod\_90_lcu_brent_kung\WIDTH=32'00000000000000000000000000010000 for cells of type $lcu.
+Using template $paramod$32a7b7b86c07519b7537abc18e96f0331f97914d\_90_alu for cells of type $alu.
+Using extmapper simplemap for cells of type $reduce_and.
+Using template $paramod$740b056ede97228d3eae64ea2fdc81f0a33e0fe7\_90_alu for cells of type $alu.
+Using extmapper simplemap for cells of type $reduce_bool.
+Using extmapper simplemap for cells of type $reduce_or.
+Using extmapper simplemap for cells of type $eq.
+Using extmapper simplemap for cells of type $logic_not.
+Using extmapper simplemap for cells of type $dff.
+Using extmapper simplemap for cells of type $logic_and.
+Using template $paramod\_90_fa\WIDTH=32'00000000000000000000000000000100 for cells of type $fa.
+Using template $paramod\_90_lcu_brent_kung\WIDTH=32'00000000000000000000000000000100 for cells of type $lcu.
+Using template $paramod$dde52db7035cb02b3cc5e73865788532339e3bcb\_90_alu for cells of type $alu.
+Using template $paramod$f3828da01ad01c57fb135eef5255d942f0b0876c\_90_alu for cells of type $alu.
+Using template $paramod$8d4e0c4036550d1667645193bacf5d3d25981868\_90_alu for cells of type $alu.
+Using template $paramod$1a9b2adc0e90ccf2d22dba8d72430d10741e65ed\_90_alu for cells of type $alu.
+Using template $paramod$a85054e34df77fdf6950c2480d03c3126f8b7cea\_90_alu for cells of type $alu.
+Using template $paramod$8d52a25ca3eeff529123f58a98d6c80692e2b4da\_90_alu for cells of type $alu.
+Using template $paramod$acf5ee781c77b898d3bdc54c59bb9c663376a7a9\_90_alu for cells of type $alu.
+Using template $paramod$ba698a254f9a5947e85cbe7beae6b161eefc5386\_90_alu for cells of type $alu.
+Using extmapper simplemap for cells of type $bmux.
+Using template $paramod$constmap:f5a1827fa10cc986c3faaef3f4e4ac0dac46ec55$paramod$ec3a5fe9d090f707e227c8899faaed3e3740e17c\_90_shift_shiftx for cells of type $shiftx.
+Using template $paramod$constmap:edacfeed08acb2da37fa8d1111a2e042a939c09d$paramod$f33ec04c27392c5df3d2231c3d6403ad20208d4c\_90_shift_shiftx for cells of type $shiftx.
+Using template $paramod$constmap:e524b28c8045ba8795ce47b8cae18155bb9ffe00$paramod$4b1a2c7ac824f5522d7afd112d4a6cc2bff5f9ca\_90_shift_shiftx for cells of type $shiftx.
+Using template $paramod$constmap:49eeed1d8b7b102b56c9e816eb0811536321f811$paramod$7767517cef72a6de94ea674249a322a2ac864379\_90_shift_shiftx for cells of type $shiftx.
+Using template $paramod\_90_fa\WIDTH=32'00000000000000000000000000000101 for cells of type $fa.
+Using template $paramod\_90_lcu_brent_kung\WIDTH=32'00000000000000000000000000000101 for cells of type $lcu.
+Using template $paramod\_90_fa\WIDTH=32'00000000000000000000000000000011 for cells of type $fa.
+Using template $paramod\_90_lcu_brent_kung\WIDTH=32'00000000000000000000000000000011 for cells of type $lcu.
+Using template $paramod\_90_fa\WIDTH=32'00000000000000000000000000000010 for cells of type $fa.
+Using template $paramod\_90_lcu_brent_kung\WIDTH=32'00000000000000000000000000000010 for cells of type $lcu.
+No more expansions possible.
+<suppressed ~2594 debug messages>
+
+8.21. Executing OPT pass (performing simple optimizations).
+
+8.21.1. Executing OPT_EXPR pass (perform const folding).
+Optimizing module tiny_npu_top.
+Optimizing module matrix_feeder.
+<suppressed ~5299 debug messages>
+Optimizing module controller.
+<suppressed ~70 debug messages>
+Optimizing module input_buffer.
+Optimizing module systolic_array.
+Optimizing module pe.
+<suppressed ~440 debug messages>
+
+8.21.2. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\tiny_npu_top'.
+Computing hashes of 4 cells of `\tiny_npu_top'.
+Finding duplicate cells in `\tiny_npu_top'.
+Finding identical cells in module `\matrix_feeder'.
+Computing hashes of 9738 cells of `\matrix_feeder'.
+Finding duplicate cells in `\matrix_feeder'.
+Computing hashes of 9711 cells of `\matrix_feeder'.
+Finding duplicate cells in `\matrix_feeder'.
+Computing hashes of 9705 cells of `\matrix_feeder'.
+Finding duplicate cells in `\matrix_feeder'.
+Computing hashes of 9702 cells of `\matrix_feeder'.
+Finding duplicate cells in `\matrix_feeder'.
+<suppressed ~108 debug messages>
+Finding identical cells in module `\controller'.
+Computing hashes of 64 cells of `\controller'.
+Finding duplicate cells in `\controller'.
+Computing hashes of 57 cells of `\controller'.
+Finding duplicate cells in `\controller'.
+<suppressed ~21 debug messages>
+Finding identical cells in module `\input_buffer'.
+Computing hashes of 256 cells of `\input_buffer'.
+Finding duplicate cells in `\input_buffer'.
+Finding identical cells in module `\systolic_array'.
+Computing hashes of 16 cells of `\systolic_array'.
+Finding duplicate cells in `\systolic_array'.
+Finding identical cells in module `\pe'.
+Computing hashes of 899 cells of `\pe'.
+Finding duplicate cells in `\pe'.
+Computing hashes of 847 cells of `\pe'.
+Finding duplicate cells in `\pe'.
+Computing hashes of 824 cells of `\pe'.
+Finding duplicate cells in `\pe'.
+Computing hashes of 814 cells of `\pe'.
+Finding duplicate cells in `\pe'.
+Computing hashes of 808 cells of `\pe'.
+Finding duplicate cells in `\pe'.
+Computing hashes of 801 cells of `\pe'.
+Finding duplicate cells in `\pe'.
+Computing hashes of 795 cells of `\pe'.
+Finding duplicate cells in `\pe'.
+Computing hashes of 792 cells of `\pe'.
+Finding duplicate cells in `\pe'.
+<suppressed ~321 debug messages>
+Removed a total of 150 cells.
+
+8.21.3. Executing OPT_DFF pass (perform DFF optimizations).
+
+8.21.4. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \tiny_npu_top..
+Finding unused cells or wires in module \matrix_feeder..
+Finding unused cells or wires in module \controller..
+Finding unused cells or wires in module \input_buffer..
+Finding unused cells or wires in module \systolic_array..
+Finding unused cells or wires in module \pe..
+Removed 8430 unused cells and 796 unused wires.
+<suppressed ~8433 debug messages>
+
+8.21.5. Finished fast OPT passes.
+
+8.22. Executing ABC pass (technology mapping using ABC).
+
+8.22.1. Summary of detected clock domains:
+  1346 cells in clk={ }, en={ }, arst={ }, srst={ }
+
+8.22.2. Extracting gate netlist of module `\matrix_feeder' to `<abc-temp-dir>/input.blif'..
+No matching clock domain found. Not extracting any FF cells.
+Replacing 544 occurrences of constant undef bits with constant zero bits
+
+8.22.3. Summary of detected clock domains:
+  725 cells in clk=\clk, en=\en, arst={ }, srst=$logic_or$rtl/pe.sv:17$3_Y
+
+8.22.4. Extracting gate netlist of module `\pe' to `<abc-temp-dir>/input.blif'..
+Found matching posedge clock domain: \clk, enabled by \en, synchronously reset by $logic_or$rtl/pe.sv:17$3_Y
+
+8.22.5. Summary of detected clock domains:
+  256 cells in clk=\clk, en=\load, arst={ }, srst=\rst
+
+8.22.6. Extracting gate netlist of module `\input_buffer' to `<abc-temp-dir>/input.blif'..
+Found matching posedge clock domain: \clk, enabled by \load, synchronously reset by \rst
+
+8.22.7. Summary of detected clock domains:
+  22 cells in clk=\clk, en=$auto$simple.cc:193:make_patterns_logic$430, arst={ }, srst=$auto$simple.cc:234:combine_resets$427
+  28 cells in clk=\clk, en={ }, arst={ }, srst={ }
+
+8.22.8. Extracting gate netlist of module `\controller' to `<abc-temp-dir>/input.blif'..
+Found matching posedge clock domain: \clk, enabled by $auto$simple.cc:193:make_patterns_logic$430, synchronously reset by $auto$simple.cc:234:combine_resets$427
+
+8.22.9. Extracting gate netlist of module `\controller' to `<abc-temp-dir>/input.blif'..
+Found matching posedge clock domain: \clk
+
+8.22.10. Summary of detected clock domains:
+  16 cells in clk={ }, en={ }, arst={ }, srst={ }
+
+8.22.11. Extracting gate netlist of module `\systolic_array' to `<abc-temp-dir>/input.blif'..
+No matching clock domain found. Not extracting any FF cells.
+
+8.22.12. Summary of detected clock domains:
+  4 cells in clk={ }, en={ }, arst={ }, srst={ }
+
+8.22.13. Extracting gate netlist of module `\tiny_npu_top' to `<abc-temp-dir>/input.blif'..
+No matching clock domain found. Not extracting any FF cells.
+
+8.22.13.1. Executed ABC.
+Extracted 1346 gates and 1609 wires to a netlist network with 261 inputs and 64 outputs.
+Running ABC script: <abc-temp-dir>/abc.script
+ABC: ======== ABC command line "source <abc-temp-dir>/abc.script"
+ABC: + read_blif <abc-temp-dir>/input.blif 
+ABC: + read_library <abc-temp-dir>/stdcells.genlib 
+ABC: + strash 
+ABC: + &get -n 
+ABC: + &fraig -x 
+ABC: + &put 
+ABC: + scorr 
+ABC: Warning: The network is combinational (run "fraig" or "fraig_sweep").
+ABC: + dc2 
+ABC: + dretime 
+ABC: + strash 
+ABC: + &get -n 
+ABC: + &dch -f 
+ABC: + &nf 
+ABC: + &put 
+ABC: + write_blif <abc-temp-dir>/output.blif 
+
+8.22.13.2. Re-integrating ABC results.
+ABC RESULTS:               AND cells:      204
+ABC RESULTS:            ANDNOT cells:        6
+ABC RESULTS:               MUX cells:        2
+ABC RESULTS:              NAND cells:      268
+ABC RESULTS:               NOR cells:        1
+ABC RESULTS:                OR cells:        1
+ABC RESULTS:             ORNOT cells:       40
+ABC RESULTS:              XNOR cells:        1
+ABC RESULTS:               XOR cells:        1
+ABC RESULTS:        internal signals:     1284
+ABC RESULTS:           input signals:      261
+ABC RESULTS:          output signals:       64
+Removing temp directory.
+
+8.22.13.1. Executed ABC.
+Extracted 677 gates and 727 wires to a netlist network with 50 inputs and 33 outputs.
+Running ABC script: <abc-temp-dir>/abc.script
+ABC: ======== ABC command line "source <abc-temp-dir>/abc.script"
+ABC: + read_blif <abc-temp-dir>/input.blif 
+ABC: + read_library <abc-temp-dir>/stdcells.genlib 
+ABC: + strash 
+ABC: + &get -n 
+ABC: + &fraig -x 
+ABC: + &put 
+ABC: + scorr 
+ABC: Warning: The network is combinational (run "fraig" or "fraig_sweep").
+ABC: + dc2 
+ABC: + dretime 
+ABC: + strash 
+ABC: + &get -n 
+ABC: + &dch -f 
+ABC: + &nf 
+ABC: + &put 
+ABC: + write_blif <abc-temp-dir>/output.blif 
+
+8.22.13.2. Re-integrating ABC results.
+ABC RESULTS:               AND cells:       96
+ABC RESULTS:            ANDNOT cells:       10
+ABC RESULTS:               MUX cells:        5
+ABC RESULTS:              NAND cells:      219
+ABC RESULTS:               NOR cells:        1
+ABC RESULTS:                OR cells:       38
+ABC RESULTS:             ORNOT cells:       10
+ABC RESULTS:              XNOR cells:       55
+ABC RESULTS:               XOR cells:      137
+ABC RESULTS:        internal signals:      644
+ABC RESULTS:           input signals:       50
+ABC RESULTS:          output signals:       33
+Removing temp directory.
+
+8.22.13.1. Executed ABC.
+Extracted 0 gates and 0 wires to a netlist network with 0 inputs and 0 outputs.
+Don't call ABC as there is nothing to map.
+Removing temp directory.
+
+8.22.13.1. Executed ABC.
+Extracted 18 gates and 27 wires to a netlist network with 8 inputs and 10 outputs.
+Running ABC script: <abc-temp-dir>/abc.script
+ABC: ======== ABC command line "source <abc-temp-dir>/abc.script"
+ABC: + read_blif <abc-temp-dir>/input.blif 
+ABC: + read_library <abc-temp-dir>/stdcells.genlib 
+ABC: + strash 
+ABC: + &get -n 
+ABC: + &fraig -x 
+ABC: + &put 
+ABC: + scorr 
+ABC: Warning: The network is combinational (run "fraig" or "fraig_sweep").
+ABC: + dc2 
+ABC: + dretime 
+ABC: + strash 
+ABC: + &get -n 
+ABC: + &dch -f 
+ABC: + &nf 
+ABC: + &put 
+ABC: + write_blif <abc-temp-dir>/output.blif 
+
+8.22.13.2. Re-integrating ABC results.
+ABC RESULTS:               AND cells:        5
+ABC RESULTS:            ANDNOT cells:        5
+ABC RESULTS:              NAND cells:        1
+ABC RESULTS:                OR cells:        5
+ABC RESULTS:             ORNOT cells:        2
+ABC RESULTS:        internal signals:        9
+ABC RESULTS:           input signals:        8
+ABC RESULTS:          output signals:       10
+Removing temp directory.
+
+8.22.13.1. Executed ABC.
+Extracted 24 gates and 34 wires to a netlist network with 10 inputs and 5 outputs.
+Running ABC script: <abc-temp-dir>/abc.script
+ABC: ======== ABC command line "source <abc-temp-dir>/abc.script"
+ABC: + read_blif <abc-temp-dir>/input.blif 
+ABC: + read_library <abc-temp-dir>/stdcells.genlib 
+ABC: + strash 
+ABC: + &get -n 
+ABC: + &fraig -x 
+ABC: + &put 
+ABC: + scorr 
+ABC: Warning: The network is combinational (run "fraig" or "fraig_sweep").
+ABC: + dc2 
+ABC: + dretime 
+ABC: + strash 
+ABC: + &get -n 
+ABC: + &dch -f 
+ABC: + &nf 
+ABC: + &put 
+ABC: + write_blif <abc-temp-dir>/output.blif 
+
+8.22.13.2. Re-integrating ABC results.
+ABC RESULTS:               AND cells:        4
+ABC RESULTS:            ANDNOT cells:        4
+ABC RESULTS:              NAND cells:        2
+ABC RESULTS:               NOR cells:        3
+ABC RESULTS:             ORNOT cells:        1
+ABC RESULTS:        internal signals:       19
+ABC RESULTS:           input signals:       10
+ABC RESULTS:          output signals:        5
+Removing temp directory.
+
+8.22.13.1. Executed ABC.
+Extracted 0 gates and 0 wires to a netlist network with 0 inputs and 0 outputs.
+Don't call ABC as there is nothing to map.
+Removing temp directory.
+
+8.22.13.1. Executed ABC.
+Extracted 0 gates and 0 wires to a netlist network with 0 inputs and 0 outputs.
+Don't call ABC as there is nothing to map.
+Removing temp directory.
+Removing global temp directory.
+
+8.23. Executing OPT pass (performing simple optimizations).
+
+8.23.1. Executing OPT_EXPR pass (perform const folding).
+Optimizing module tiny_npu_top.
+Optimizing module matrix_feeder.
+Optimizing module controller.
+Optimizing module input_buffer.
+Optimizing module systolic_array.
+Optimizing module pe.
+
+8.23.2. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `\tiny_npu_top'.
+Computing hashes of 4 cells of `\tiny_npu_top'.
+Finding duplicate cells in `\tiny_npu_top'.
+Finding identical cells in module `\matrix_feeder'.
+Computing hashes of 524 cells of `\matrix_feeder'.
+Finding duplicate cells in `\matrix_feeder'.
+Finding identical cells in module `\controller'.
+Computing hashes of 40 cells of `\controller'.
+Finding duplicate cells in `\controller'.
+Finding identical cells in module `\input_buffer'.
+Computing hashes of 256 cells of `\input_buffer'.
+Finding duplicate cells in `\input_buffer'.
+Finding identical cells in module `\systolic_array'.
+Computing hashes of 16 cells of `\systolic_array'.
+Finding duplicate cells in `\systolic_array'.
+Finding identical cells in module `\pe'.
+Computing hashes of 619 cells of `\pe'.
+Finding duplicate cells in `\pe'.
+Removed a total of 0 cells.
+
+8.23.3. Executing OPT_DFF pass (perform DFF optimizations).
+
+8.23.4. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \tiny_npu_top..
+Finding unused cells or wires in module \matrix_feeder..
+Finding unused cells or wires in module \controller..
+Finding unused cells or wires in module \input_buffer..
+Finding unused cells or wires in module \systolic_array..
+Finding unused cells or wires in module \pe..
+Removed 0 unused cells and 749 unused wires.
+<suppressed ~4 debug messages>
+
+8.23.5. Finished fast OPT passes.
+
+8.24. Executing HIERARCHY pass (managing design hierarchy).
+Attribute `top' found on module `tiny_npu_top'. Setting top module to tiny_npu_top.
+
+8.24.1. Analyzing design hierarchy..
+Top module:  \tiny_npu_top
+Used module:     \systolic_array
+Used module:         \pe
+Used module:     \matrix_feeder
+Used module:     \input_buffer
+Used module:     \controller
+
+8.24.2. Analyzing design hierarchy..
+Top module:  \tiny_npu_top
+Used module:     \systolic_array
+Used module:         \pe
+Used module:     \matrix_feeder
+Used module:     \input_buffer
+Used module:     \controller
+Removed 0 unused modules.
+
+8.25. Printing statistics.
+
+=== tiny_npu_top ===
+
+        +----------Local Count, excluding submodules.
+        | 
+       15 wires
+     1099 wire bits
+       15 public wires
+     1099 public wire bits
+        7 ports
+      772 port bits
+        4 submodules
+        1   controller
+        1   input_buffer
+        1   matrix_feeder
+        1   systolic_array
+
+=== matrix_feeder ===
+
+        +----------Local Count, excluding submodules.
+        | 
+      466 wires
+      785 wire bits
+        6 public wires
+      325 public wire bits
+        6 ports
+      325 port bits
+      524 cells
+        6   $_ANDNOT_
+      204   $_AND_
+        2   $_MUX_
+      268   $_NAND_
+        1   $_NOR_
+       40   $_ORNOT_
+        1   $_OR_
+        1   $_XNOR_
+        1   $_XOR_
+
+=== controller ===
+
+        +----------Local Count, excluding submodules.
+        | 
+       41 wires
+       50 wire bits
+        9 public wires
+       15 public wire bits
+        8 ports
+       11 port bits
+       40 cells
+        9   $_ANDNOT_
+        9   $_AND_
+        4   $_DFF_P_
+        3   $_NAND_
+        3   $_NOR_
+        3   $_ORNOT_
+        5   $_OR_
+        4   $_SDFFE_PP0P_
+
+=== input_buffer ===
+
+        +----------Local Count, excluding submodules.
+        | 
+        7 wires
+      515 wire bits
+        7 public wires
+      515 public wire bits
+        7 ports
+      515 port bits
+      256 cells
+      256   $_SDFFE_PP0P_
+
+=== systolic_array ===
+
+        +----------Local Count, excluding submodules.
+        | 
+       63 wires
+     1412 wire bits
+       63 public wires
+     1412 public wire bits
+        7 ports
+      580 port bits
+       16 submodules
+       16   pe
+
+=== pe ===
+
+        +----------Local Count, excluding submodules.
+        | 
+      550 wires
+      671 wire bits
+        9 public wires
+       68 public wire bits
+        9 ports
+       68 port bits
+      619 cells
+       10   $_ANDNOT_
+       96   $_AND_
+        5   $_MUX_
+      219   $_NAND_
+        1   $_NOR_
+       10   $_ORNOT_
+       38   $_OR_
+       48   $_SDFFE_PP0P_
+       55   $_XNOR_
+      137   $_XOR_
+
+=== design hierarchy ===
+
+        +----------Count including submodules.
+        | 
+    10724 tiny_npu_top
+       40 controller
+      256 input_buffer
+      524 matrix_feeder
+      619   pe
+
+        +----------Count including submodules.
+        | 
+     9392 wires
+    14597 wire bits
+      244 public wires
+     4454 public wire bits
+      179 ports
+     3291 port bits
+        - memories
+        - memory bits
+        - processes
+    10724 cells
+      175   $_ANDNOT_
+     1749   $_AND_
+        4   $_DFF_P_
+       82   $_MUX_
+     3775   $_NAND_
+       20   $_NOR_
+      203   $_ORNOT_
+      614   $_OR_
+     1028   $_SDFFE_PP0P_
+      881   $_XNOR_
+     2193   $_XOR_
+        4 submodules
+        1   controller
+        1   input_buffer
+        1   matrix_feeder
+        1   systolic_array
+
+8.26. Executing CHECK pass (checking for obvious problems).
+Checking module tiny_npu_top...
+Checking module matrix_feeder...
+Checking module controller...
+Checking module input_buffer...
+Checking module systolic_array...
+Checking module pe...
+Found and reported 0 problems.
+
+9. Executing CHECK pass (checking for obvious problems).
+Checking module tiny_npu_top...
+Checking module matrix_feeder...
+Checking module controller...
+Checking module input_buffer...
+Checking module systolic_array...
+Checking module pe...
+Found and reported 0 problems.
+
+10. Printing statistics.
+
+=== tiny_npu_top ===
+
+        +----------Local Count, excluding submodules.
+        | 
+       15 wires
+     1099 wire bits
+       15 public wires
+     1099 public wire bits
+        7 ports
+      772 port bits
+        4 submodules
+        1   controller
+        1   input_buffer
+        1   matrix_feeder
+        1   systolic_array
+
+=== matrix_feeder ===
+
+        +----------Local Count, excluding submodules.
+        | 
+      466 wires
+      785 wire bits
+        6 public wires
+      325 public wire bits
+        6 ports
+      325 port bits
+      524 cells
+        6   $_ANDNOT_
+      204   $_AND_
+        2   $_MUX_
+      268   $_NAND_
+        1   $_NOR_
+       40   $_ORNOT_
+        1   $_OR_
+        1   $_XNOR_
+        1   $_XOR_
+
+=== controller ===
+
+        +----------Local Count, excluding submodules.
+        | 
+       41 wires
+       50 wire bits
+        9 public wires
+       15 public wire bits
+        8 ports
+       11 port bits
+       40 cells
+        9   $_ANDNOT_
+        9   $_AND_
+        4   $_DFF_P_
+        3   $_NAND_
+        3   $_NOR_
+        3   $_ORNOT_
+        5   $_OR_
+        4   $_SDFFE_PP0P_
+
+=== input_buffer ===
+
+        +----------Local Count, excluding submodules.
+        | 
+        7 wires
+      515 wire bits
+        7 public wires
+      515 public wire bits
+        7 ports
+      515 port bits
+      256 cells
+      256   $_SDFFE_PP0P_
+
+=== systolic_array ===
+
+        +----------Local Count, excluding submodules.
+        | 
+       63 wires
+     1412 wire bits
+       63 public wires
+     1412 public wire bits
+        7 ports
+      580 port bits
+       16 submodules
+       16   pe
+
+=== pe ===
+
+        +----------Local Count, excluding submodules.
+        | 
+      550 wires
+      671 wire bits
+        9 public wires
+       68 public wire bits
+        9 ports
+       68 port bits
+      619 cells
+       10   $_ANDNOT_
+       96   $_AND_
+        5   $_MUX_
+      219   $_NAND_
+        1   $_NOR_
+       10   $_ORNOT_
+       38   $_OR_
+       48   $_SDFFE_PP0P_
+       55   $_XNOR_
+      137   $_XOR_
+
+=== design hierarchy ===
+
+        +----------Count including submodules.
+        | 
+    10724 tiny_npu_top
+       40 controller
+      256 input_buffer
+      524 matrix_feeder
+      619   pe
+
+        +----------Count including submodules.
+        | 
+     9392 wires
+    14597 wire bits
+      244 public wires
+     4454 public wire bits
+      179 ports
+     3291 port bits
+        - memories
+        - memory bits
+        - processes
+    10724 cells
+      175   $_ANDNOT_
+     1749   $_AND_
+        4   $_DFF_P_
+       82   $_MUX_
+     3775   $_NAND_
+       20   $_NOR_
+      203   $_ORNOT_
+      614   $_OR_
+     1028   $_SDFFE_PP0P_
+      881   $_XNOR_
+     2193   $_XOR_
+        4 submodules
+        1   controller
+        1   input_buffer
+        1   matrix_feeder
+        1   systolic_array
+
+End of script. Logfile hash: 7ff3aba71a
+Yosys 0.69+270 (git sha1 c4a0a2c48, Release, GNU /usr/bin/x86_64-w64-mingw32-g++ 15.2.1)
+Time spent: 2% 36x opt_expr (0 sec), 2% 22x proc_clean (0 sec), ...

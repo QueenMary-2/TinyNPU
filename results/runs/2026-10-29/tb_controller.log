@@ -1,0 +1,14 @@
+VCD info: dumpfile controller.vcd opened for output.
+RUN cycle 0 passed
+RUN cycle 1 passed
+RUN cycle 2 passed
+RUN cycle 3 passed
+RUN cycle 4 passed
+RUN cycle 5 passed
+RUN cycle 6 passed
+RUN cycle 7 passed
+RUN cycle 8 passed
+RUN cycle 9 passed
+All controller tests passed!
+Return to IDLE passed!
+tb/tb_controller.sv:99: $finish called at 156000 (1ps)
