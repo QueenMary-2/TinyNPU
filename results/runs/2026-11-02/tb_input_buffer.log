@@ -1,0 +1,7 @@
+VCD info: dumpfile sim/input_buffer.vcd opened for output.
+Rst test pass
+Load test passed
+Hold data pass
+PASS: Second load
+ALL INPUT BUFFER TESTS PASSED
+tb/tb_input_buffer.sv:90: $finish called at 90000 (1ps)

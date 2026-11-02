@@ -1,0 +1,19 @@
+VCD info: dumpfile sim/tiny_npu_top.vcd opened for output.
+PASS C[0][0] = 4
+PASS C[0][1] = 6
+PASS C[0][2] = 5
+PASS C[0][3] = 8
+PASS C[1][0] = 12
+PASS C[1][1] = 14
+PASS C[1][2] = 17
+PASS C[1][3] = 20
+PASS C[2][0] = 20
+PASS C[2][1] = 22
+PASS C[2][2] = 29
+PASS C[2][3] = 32
+PASS C[3][0] = 28
+PASS C[3][1] = 30
+PASS C[3][2] = 41
+PASS C[3][3] = 44
+ALL TINYNPU TOP TESTS PASSED
+tb/tb_tiny_npu_top.sv:139: $finish called at 160000 (1ps)

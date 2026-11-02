@@ -1,0 +1,119 @@
+{
+  "status": "PASS",
+  "verified_utc": "2026-11-02T11:52:27.778105+00:00",
+  "python": "3.12.5",
+  "numpy": "2.5.4",
+  "test_images": 10000,
+  "fp32_correct": 9550,
+  "fp32_accuracy": 0.955,
+  "int8_correct": 9548,
+  "int8_accuracy": 0.9548,
+  "sample_artifact_matches": true,
+  "tile_labels": [
+    7,
+    2,
+    1,
+    0
+  ],
+  "feature_indices": [
+    572,
+    573,
+    574,
+    575
+  ],
+  "A": [
+    [
+      1,
+      101,
+      127,
+      109
+    ],
+    [
+      126,
+      126,
+      126,
+      126
+    ],
+    [
+      125,
+      127,
+      33,
+      0
+    ],
+    [
+      125,
+      125,
+      125,
+      126
+    ]
+  ],
+  "B": [
+    [
+      27,
+      24,
+      -22,
+      -11
+    ],
+    [
+      23,
+      8,
+      -11,
+      -23
+    ],
+    [
+      8,
+      -6,
+      -22,
+      -32
+    ],
+    [
+      13,
+      -19,
+      -16,
+      6
+    ]
+  ],
+  "C": [
+    [
+      4783,
+      -2001,
+      -5671,
+      -5744
+    ],
+    [
+      8946,
+      882,
+      -8946,
+      -7560
+    ],
+    [
+      6560,
+      3818,
+      -4873,
+      -5352
+    ],
+    [
+      8888,
+      856,
+      -8891,
+      -7494
+    ]
+  ],
+  "scope": "Software full-network evaluation; RTL validates only one partial first-layer tile, without bias, ReLU or requantization.",
+  "sources_sha256": {
+    "nn/data/mnist.npz": "731c5ac602752760c8e48fbffcf8c3b850d9dc2a2aedcf2cc48468fc17b673d1",
+    "nn/models/mnist_fp32.npz": "a9b2a60dd3a9764925c742e1c14b6408930bf1ff05fa9899bd6b44082f851ff9",
+    "nn/models/mnist_int8.npz": "2d82148833590c0908fd3f642a17dd6ca7732f17d0ab7f8db2f481e3836e9375",
+    "nn/vectors/mnist_tile_a.hex": "592fba3849aba706c40313e3ad4cc820fd8854d3034e9f0edc208197427122a4",
+    "nn/vectors/mnist_tile_b.hex": "f7888eae71bcc3b21cbd85d51c4fbc597db56293ff1cfbb89048368941dc8889",
+    "nn/vectors/mnist_tile_expected.hex": "24c98c77651955a9a5462dcba7fd97c273c78bf27d0e3ba2bc56ade1aba8491d",
+    "nn/scripts/export_first_tile.py": "5197b5dbd3b64fb556d6f9b3ce672d23869d44f60c2e3ed797905b9808dd1d8e",
+    "nn/scripts/inspect_mnist.py": "847d4af969aec8a9d73e195a355e5b8c2cf6d40610c3d072f73cc1b6207c9cef",
+    "nn/scripts/quantize_mnist.py": "6b954a664a20789b91208f887f2b74e9dcd28f49d619475cd4868d726e07166e",
+    "nn/scripts/train_mnist.py": "9ff8ec82359b63da683b7f18ba64a672d1441237ff8a5954a1fde0eaf2da8405",
+    "nn/scripts/verify_artifacts.py": "2b0cb38a657998c34dc2a71f8ad7f1e5b2982d1f2914635fd4737112e66d11ef",
+    "nn/results/training_report.json": "df1b654bf81fd19f9a20ba52448e7f4cbf9d609320baa466db8bbedd57078039",
+    "nn/results/quantization_report.json": "a64d1949bdcdd0d6907be70e53d30cd23253daa531abd7647f32a7eb3bc4d457",
+    "nn/results/int8_sample.npz": "192d023a133a31dfea33c9360bb1a0d039de6e3fef037bc0f3a0c4278ecf39de"
+  }
+}

@@ -45,3 +45,11 @@ Thumbs.db
 
 # Independent publication checkout; never nest it in the public repository.
 /.publish/
+
+# Local Python environments, downloaded dataset and package caches
+.venv/
+venv/
+.pytest_cache/
+*.egg-info/
+*.part
+/nn/data/

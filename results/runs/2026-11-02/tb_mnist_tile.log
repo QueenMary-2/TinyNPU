@@ -1,0 +1,2 @@
+MNIST TILE PASS: 16/16
+tb/tb_mnist_tile.sv:77: $finish called at 150000 (1ps)

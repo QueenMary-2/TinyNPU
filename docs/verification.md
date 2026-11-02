@@ -1,5 +1,21 @@
 # Verification and synthesis evidence
 
+## Latest checks - 2 November 2026
+
+RTL is byte-for-byte unchanged from the previously tested source snapshot in the 29 October run manifest. The new application work consists of MNIST software scripts, saved FP32/INT8 model artifacts, exported hex fixtures and `tb_mnist_tile`; no core RTL or existing test logic was changed. The runner now supports optional `--mnist`, copies fixtures into an isolated run directory and independently validates their signed integer product before invoking RTL.
+
+Command: `python scripts/run_checks.py --mode sim --mnist --output build/update-2026-11-02`.
+
+**All eight benches passed.** The existing extended suite again completed 24/24 cases, 384 comparisons, zero errors. The new MNIST tile compared 16/16 INT32 outputs successfully. Other passing benches cover PE, array, controller, feeder, buffer and directed top-level integration. [Run evidence](../results/runs/2026-11-02/README.md) includes actual compiler/console logs, seven VCDs and a source/fixture/artifact manifest. The MNIST bench does not dump a VCD and can exit with zero status on failure, so the runner requires its success marker and rejects failure/timeout text.
+
+The tile uses the first four test images (labels 7, 2, 1, 0), input features 572-575 and the first four hidden neurons. It is a partial first-layer product without bias, activation or requantization. The exporter was rerun into a new directory; the regenerated vectors matched the saved fixtures.
+
+Saved models were separately evaluated read-only on 10,000 local test images using `nn/scripts/verify_artifacts.py`: **FP32 9550/10000 (95.50%)**, **INT8 9548/10000 (95.48%)**. Model shapes, saved sample intermediates and reports matched. [model_verification.json](../results/runs/2026-11-02/model_verification.json) records data/model/script/vector hashes and exact tile matrices. Training and quantization were not repeated or overwritten. These are software accuracy results, not complete RTL inference accuracy. The original training duration and epoch count remain historical report values rather than newly measured training results.
+
+Full synthesis was not repeated because RTL is unchanged. The earlier confirmed top-level figures below remain applicable to that recorded flow/version. A newly found [local PE-only synthesis log](../results/runs/2026-11-02/pe_synth_existing.log) is preserved separately as historical evidence; it does not prove equivalence of a gate netlist.
+
+See [MNIST use and limitations](../nn/README.md). Existing coverage gaps described below remain; one application tile does not establish full-network hardware execution or exhaustive numerical coverage.
+
 ## Confirmed run - 29 October 2026
 
 Existing RTL and seven existing testbenches were compiled and run using Icarus Verilog 14.0 (devel), `s20260301-541-gb25510638-dirty`, from OSS CAD Suite 20261009. No RTL or testbench logic was changed during this release preparation. All seven benches completed successfully. The [runner](../scripts/run_checks.py) checks return codes, timeout, success/failure text and extended test IDs/counts.

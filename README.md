@@ -6,7 +6,7 @@ It provides a concrete portfolio example for RTL / ASIC design and AI accelerato
 
 ## Confirmed engineering results
 
-Verified on **29 October 2026** with the existing OSS CAD Suite installation:
+Latest simulation and saved-model checks: **2 November 2026**. Generic synthesis was confirmed on 29 October 2026; RTL is unchanged since that run.
 
 | Item | Confirmed result |
 |---|---|
@@ -14,11 +14,13 @@ Verified on **29 October 2026** with the existing OSS CAD Suite installation:
 | Output checks in the extended suite | **384 comparisons** (24 matrices x 16 elements) |
 | Directed cases | Zero, Identity, Negative, alternating INT8 Boundary |
 | Random cases | 20 signed INT8 matrix pairs |
+| MNIST-derived RTL tile | **16 / 16 outputs match** the signed integer reference |
+| Saved-model software evaluation | FP32 **95.50%**, INT8 **95.48%** on 10,000 test images; not hardware classification accuracy |
 | Other regressions | PE, array, controller, feeder, input buffer and directed top-level benches passed |
 | Yosys generic synthesis | **10,724 cells; 1,032 flip-flop bits** |
 | Structural checks | `check -assert` completed; 0 reported problems |
 
-[Captured logs, VCDs and source hashes](results/runs/2026-10-29/README.md) support these results. [Verification details](docs/verification.md) explain coverage and limitations. Cell counts are generic logic counts, not standard-cell area, PPA or FPGA utilization.
+[Current logs and model/vector checks](results/runs/2026-11-02/README.md) and [earlier synthesis evidence](results/runs/2026-10-29/README.md) support these results. [Verification details](docs/verification.md) explain coverage and limitations. Cell counts are generic logic counts, not standard-cell area, PPA or FPGA utilization.
 
 ## Architecture
 
@@ -103,6 +105,19 @@ Seven existing benches were run without editing their test logic. The buffer ben
 
 The runner checks process status and success/failure text: the extended and buffer benches print failure summaries without necessarily exiting nonzero. The existing bench does not explicitly seed its RNG; the saved VCD captures actual tested inputs. Cross-simulator random sequences are not guaranteed to match. This is not exhaustive, formal or coverage-driven verification.
 
+## MNIST software-to-RTL bridge
+
+The new [MNIST experiment](nn/README.md) adds dataset inspection, 784-16-10 MLP training, symmetric INT8 quantization, saved models and a first-layer tile exporter. Saved model inference was independently re-evaluated without retraining: FP32 9550/10000, INT8 9548/10000. Software performs bias addition, ReLU, Q24 requantization and classification; these functions have not been added to the RTL.
+
+[tb_mnist_tile](tb/tb_mnist_tile.sv) reads [saved hex fixtures](nn/vectors/), drives the existing top level and checks all sixteen outputs. The fixture selects features 572-575 from the first four test images and four hidden neurons. It verifies a partial matrix product, not a complete layer or neural-network inference.
+
+```powershell
+# No dataset or NumPy needed: run eight benches using published fixtures.
+python scripts/run_checks.py --mode sim --mnist --output build/mnist-check
+```
+
+The output directory must be new. The runner independently checks the fixture's signed integer reference, isolates file inputs and checks failure messages as well as process status. The MNIST bench prints `MNIST TILE PASS: 16/16` but does not dump a waveform. [Software reproduction](nn/README.md) explains optional dependencies, dataset access, safe vector export and read-only model checks.
+
 ## Generic synthesis
 
 [The Yosys script](scripts/synth.ys) reads the original SystemVerilog, checks hierarchy, runs `synth -top tiny_npu_top`, then `check -assert` and `stat`. No RTL conversion or functional rewrite is used.
@@ -151,10 +166,12 @@ Use a new directory for the direct example too. Testbenches write VCDs relative 
 
 ```text
 rtl/                       Six SystemVerilog modules
-tb/                        Seven testbenches
+tb/                        Eight testbenches (including the MNIST tile)
+nn/                        MNIST scripts, small models, reports and hex fixtures
 scripts/run_checks.py      Simulation / synthesis runner
 scripts/synth.ys           Generic Yosys flow
 results/runs/2026-10-29/    Logs, VCDs and source/artifact hashes
+results/runs/2026-11-02/    Latest regressions and MNIST model/vector verification
 results/waveforms/          Preserved earlier VCD evidence
 docs/                      Architecture, verification and original notes
 docs/diagrams/              Existing PE structure SVG

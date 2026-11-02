@@ -30,11 +30,19 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--output', required=True, help='New output directory; must not exist')
     parser.add_argument('--mode', choices=['all', 'sim', 'synth'], default='all')
+    parser.add_argument('--mnist', action='store_true', help='Also check the saved MNIST tile (no NumPy or dataset needed)')
     args = parser.parse_args()
+    if args.mnist and args.mode == 'synth':
+        parser.error('--mnist requires simulation mode')
     out = Path(args.output).resolve()
     out.mkdir(parents=True, exist_ok=False)
     (out / 'sim').mkdir()
-    sources = RTL + [b[1] for b in BENCHES] + ['scripts/synth.ys', 'scripts/run_checks.py']
+    benches = list(BENCHES)
+    if args.mnist:
+        benches.append(('tb_mnist_tile', 'tb/tb_mnist_tile.sv', 'MNIST TILE PASS: 16/16'))
+    sources = RTL + [b[1] for b in benches] + ['scripts/synth.ys', 'scripts/run_checks.py']
+    if args.mnist:
+        sources += ['nn/vectors/mnist_tile_' + name + '.hex' for name in ['a', 'b', 'expected']]
     manifest = {
         'started_utc': datetime.now(timezone.utc).isoformat(),
         'mode': args.mode,
@@ -60,10 +68,34 @@ def main():
         return output
 
     try:
+        if args.mnist:
+            # Validate signed row-major fixtures independently before invoking RTL.
+            def unpack(path, bits, count):
+                words = path.read_text(encoding='ascii').split()
+                if bits == 8:
+                    if len(words) != 1 or len(words[0]) != 32:
+                        raise ValueError('Expected one packed 128-bit input: ' + path.name)
+                    packed = int(words[0], 16)
+                    values = [(packed >> (bits*i)) & 255 for i in range(count)]
+                else:
+                    if len(words) != count:
+                        raise ValueError('Expected sixteen INT32 outputs')
+                    values = [int(word, 16) for word in words]
+                return [v if v < (1 << (bits-1)) else v - (1 << bits) for v in values]
+            fixtures = ROOT / 'nn/vectors'
+            a = unpack(fixtures/'mnist_tile_a.hex', 8, 16)
+            b = unpack(fixtures/'mnist_tile_b.hex', 8, 16)
+            expected = unpack(fixtures/'mnist_tile_expected.hex', 32, 16)
+            reference = [sum(a[4*r+k]*b[4*k+c] for k in range(4)) for r in range(4) for c in range(4)]
+            if expected != reference:
+                raise ValueError('MNIST fixture expected outputs differ from signed integer reference')
+            for name in ['a', 'b', 'expected']:
+                shutil.copyfile(fixtures/('mnist_tile_' + name + '.hex'), out/'sim'/('mnist_tile_' + name + '.hex'))
+            manifest['mnist_fixture'] = {'integer_reference': 'PASS', 'comparisons': 16}
         if args.mode in ['all', 'sim']:
             run(['iverilog', '-V'], 'iverilog_version.log', ROOT)
             run(['vvp', '-V'], 'vvp_version.log', ROOT)
-            for top, source, marker in BENCHES:
+            for top, source, marker in benches:
                 binary = out / (top + '.vvp')
                 # Run in the evidence directory: benches use relative dump paths.
                 run(['iverilog', '-g2012', '-s', top, '-o', str(binary)] + RTL + [source], top + '_compile.log', ROOT)

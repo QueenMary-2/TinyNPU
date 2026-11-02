@@ -1,0 +1,19 @@
+VCD info: dumpfile sim/array.vcd opened for output.
+C[0][0]: got=4 expected=4
+C[0][1]: got=6 expected=6
+C[0][2]: got=5 expected=5
+C[0][3]: got=8 expected=8
+C[1][0]: got=12 expected=12
+C[1][1]: got=14 expected=14
+C[1][2]: got=17 expected=17
+C[1][3]: got=20 expected=20
+C[2][0]: got=20 expected=20
+C[2][1]: got=22 expected=22
+C[2][2]: got=29 expected=29
+C[2][3]: got=32 expected=32
+C[3][0]: got=28 expected=28
+C[3][1]: got=30 expected=30
+C[3][2]: got=41 expected=41
+C[3][3]: got=44 expected=44
+ALL ARRAY TESTS PASSED
+tb/tb_systolic.sv:116: $finish called at 130000 (1ps)

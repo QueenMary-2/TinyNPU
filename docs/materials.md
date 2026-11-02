@@ -6,6 +6,8 @@ The original files remain in their original locations. The directory structure a
 |---|---|
 | [README](../README.md) | Main English academic presentation and architecture/dataflow guide |
 | [Verification report](verification.md) | Test scope and evidence limitations |
+| [MNIST experiment](../nn/README.md) | Software classifier, saved models, tile fixture and hardware boundary |
+| [2 November run](../results/runs/2026-11-02/README.md) | Latest eight-bench regression and read-only model/vector verification |
 | [Architecture](architecture.md) | Current buffered design and request timing |
 | [29 October run](../results/runs/2026-10-29/README.md) | Current regression and generic synthesis logs, VCDs and source hashes |
 | [PE structure](diagrams/pe_structure.svg) | Existing Graphviz drawing copied from local simulation materials; original generation provenance unavailable |

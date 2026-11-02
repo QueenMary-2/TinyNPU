@@ -1,0 +1,12 @@
+{
+  "architecture": "784-16-10",
+  "quantization": "symmetric INT8, INT32 accumulator",
+  "correct": 9548,
+  "total": 10000,
+  "accuracy": 0.9548,
+  "weight1_scale": 0.008748093927939108,
+  "weight2_scale": 0.015792142687820074,
+  "hidden_scale": 0.17258134977085385,
+  "requant_multiplier": 6696,
+  "requant_shift": 24
+}
